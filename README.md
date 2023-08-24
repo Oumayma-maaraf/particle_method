@@ -1,4 +1,3 @@
-# particle_method
 \textbf{Stochastic collocation}
 
 Soit Y une variable aléatoire à valeurs réelles avec une fonction de répartition strictement croissante F_{Y}(y). Soit U\sim\mathcal{U}([0,1]) et u_{n}un échantillon de U. Classiquement pour générer un échantillon de Y on fait 
@@ -15,7 +14,19 @@ Dans la méthode de collocation stochastique on approxime Y par une foncition g 
 
 où \xi_{n}est un échantillon de X et x_{i},x_{j}sont des points de collocation, et y_{i}=F_{Y}^{-1}(F_{X}(x_{i})). \textbf{l}(x)=(l_{1}(x),\dots,l_{N}(x))^{T} est la base de Lagrange., telle que l_{i}(x_{j})=\delta_{ij}. Donc une fois les N points de collocation déterminés x_{i} et les N inversions F_{Y}^{-1} faites, on peut simuler nimporte quel nombre d'échantillons de Y et ceci par l'évaluation du polynome g_{N}(.). On parle ici de \textit{Stochastic Collocation Monte Carlo sampler}.
 
-\textbf{Points de collocation}
+• \textbf{Points de collocation}
+
+On sait que g_{N}(x)=\sum_{i=1}^{N}y_{i}l_{i}(x),\quad l_{i}(x)=\prod_{j=1,i\neq j}^{N}\frac{x-x_{j}}{x_{i}-x_{j}}
+
+Poue éviter de faire O(N^{2}) opération pour chaque nouvelle valeurs de x, on considère un poids \lambda_{i} défini par 
+
+\lambda_{i}=\frac{1}{\prod_{j=1,j\neq i}^{N}(x_{i}-x_{j})},\quad i\in\llbracket1,N\rrbracket
+
+et l(x)=(x-x_{1})\dots(x-x_{N}), donc l_{i}(x) peut s'écrire comme
+
+l_{i}(x)=l(x)\frac{\lambda_{i}}{x-x_{i}}
+
+donc g_{N}(x)=\sum_{i=1}^{N}\frac{y_{i}\lambda_{i}}{(x-x_{i})}l(x)
 
 On dit qu'une sequence de polynomes orthogonaux \{p_{i}\}_{i=0}^{N} avec degré deg(p_{i})=i est orthogonale en L^{2}par rapport à la densité de f_{X}(X) de X, si
 
@@ -33,7 +44,7 @@ On construit la matrice de Gram M=\{\mu_{ij}\}_{i,j=0}^{N} en considérant le mo
 
 où r_{0,0}=1 et r_{0,1}=0
 
-Les zeros x_{i},i\in\llbracket1,N\rrbracket du polynome orthogonal p_{N}(X) sont les valeurs propres de la matrice symétrique suivante
+A.2- Les zeros x_{i},i\in\llbracket1,N\rrbracket du polynôme orthogonal p_{N}(X) sont les valeurs propres de la matrice symétrique suivante
 
 \hat{J}:=\left(\begin{array}{ccccc}
 \alpha_{1} & \sqrt{\beta_{1}} & 0 & 0 & 0\\
@@ -42,6 +53,85 @@ Les zeros x_{i},i\in\llbracket1,N\rrbracket du polynome orthogonal p_{N}(X) sont
 0 & 0 & \sqrt{\beta_{N-2}} & \alpha_{N-1} & \sqrt{\beta_{N-1}}\\
 0 & 0 & 0 & \sqrt{\beta_{N-1}} & \alpha_{N}
 \end{array}\right)
+
+• \textbf{Analyse d'erreur}
+
+On s'intéresse dans cette section à l'erreur générée par \textit{Stochastic Collocation Monte Carlo sampler}.
+
+On se met dans un premier temps dans un cas où la méthode de collocation donne des résultats exacts. Soient Y\sim\mathcal{N}(\mu_{Y},\sigma_{Y}^{2}) et X\sim\mathcal{N}(\mu_{X},\sigma_{X}^{2}) deux variables aléatoires alors g_{N}(X)\overset{d}{=}Y pour N=2. En effet, soietn x_{1}et x_{2} deux points de collocation alorsg_{2}(X)=y_{1}\frac{X-x_{2}}{x_{1}-x_{2}}+y_{2}\frac{X-x_{1}}{x_{2}-x_{1}}
+
+On a F_{\mathcal{N}(0,1)}\left(\frac{y_{i}-\mu_{Y}}{\sigma_{Y}}\right)=F_{\mathcal{N}(0,1)}\left(\frac{x_{i}-\mu_{X}}{\sigma_{X}}\right), alors y_{i}=\frac{x_{i}-\mu_{X}}{\sigma_{X}}\sigma_{Y}+\mu_{Y}. On a donc \mathbb{E}\left(g_{2}(X)\right)=\mu_{Y} et \mathbb{V}\left(g_{2}(X)\right)=\sigma_{Y}^{2} et comme g_{2}(X) suit une loi normale alors Y\overset{d}{=}g_{2}(X).
+
+Dans un cas général, pour mesurer l'erreur on peut soit considérer la différence entre g(X) et g_{N}(X) soit l'erreur associée à l'approximation de la fonction de répartition.
+
+La première erreur est liée à l'interpolation de Lagrange, en effet la relation entre Y et X est Y=g(X) qu'on approxime par un polynome de Lagrange Y\approx g_{N}(X) pour N points de collocation. Cette erreur est donc bien connue 
+
+e_{X}(\xi_{n})=|g(\xi_{n})-g_{N}(\xi_{n})|=\bigg|\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}(\xi_{n}-x_{i})\bigg|
+
+avec x_{i}est un point de collocation, \hat{\xi}\in[\min(x),\max(x)] et x=(x_{1},\dots,x_{N})^{T}, on peut borner cette erreur en prenant \hat{\xi} l'abscisse du maximum de \bigg|\frac{d^{N}g(x)}{dx^{N}}\bigg|. 
+
+\textbf{Erreur de convergence en}L^{2}
+
+On a Y=g(X)\approx Y_{N}\equiv g_{N}(X), où g(x)=F_{Y}^{-1}(F_{X}(x)) donc 
+
+\mathbb{E}\left[(Y-Y_{N})^{2}\right]=\mathbb{E}\left[(g(X)-g_{N}(X))^{2}\right]=\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx
+
+Les points de collocations x_{i} et les poinds w_{i}sont déterminés par le théorème A.2. Comme g(x_{i})=g_{N}(x_{i}),pour i\in\llbracket1,N\rrbracket l'erreur est:
+
+\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx=\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}
+
+Donc l'erreur dans L^{2} est déterminée par l'erreur de quadrature.
+
+Pour une variable X\sim\mathcal{N}(0,1) il existe une relation entre les pairs de \{x_{i},w_{i}\}_{i=1}^{N} et ceux donnés par la quadrature de Gauss-Hermite. En effet, la quadrature de Gauss-Hermite est basée sur la fonction de poids x\mapsto e^{-x^{2}}, pour une fonction x\mapsto\Psi(x) on approxime les intégrales de la forme \int_{-\infty}^{+\infty}e^{-x^{2}}\Psi(x)dx.
+
+d'autre part on a \mathbb{E}(\Psi(X))=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}\Psi(x)dx=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{\pi}}e^{-x^{2}}\Psi(\sqrt{2}x)dx
+
+donc la relation entre les points et les poids des deux méthodes est x_{i}^{H}=\frac{x_{i}}{\sqrt{2}}et w_{i}^{H}=w_{i}\sqrt{\pi}. L'erreur de la quadrature de Gauss-Hermite et donc de la collocation \varepsilon_{N}=\frac{N!\sqrt{\pi}}{2^{N}}\frac{\Psi^{(2N)}(\hat{\xi})}{(2N)!},\quad\Psi(x)=(g(x)-g_{N}(x))^{2}=\left(\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}(x-x_{i})\right)^{2}
+
+Pour une fonction x\mapsto\Psi(x) assez régulière l'erreur \varepsilon_{N}converge vers 0 quand N\to\infty.
+
+\textbf{Erreur de convergence pour les queues}
+
+Ici on considère la différence entre Y et son approximation Y_{N} sachant que , où y^{*}détermine la queue. Pour tout i\in\llbracket1,N\rrbracket on a g_{N}(x_{i})=g(x_{i})=y_{i} et on fixe y^{*}et x^{*}=F_{X}^{-1}(F_{Y}(y^{*})). Alors dans L^{2}, on a:
+
+\begin{array}{cc}
+\mathbb{E}\left[(Y-Y_{N})^{2}|Y>y^{*}\right] & =\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]\\
+ & =\frac{1}{\mathbb{P}(X>x^{*})}\int_{-\infty}^{+\infty}(g(x)-g_{N}(x))^{2}1_{x>x*}(x)f_{X}(x)dx
+\end{array}
+
+En utilisant la quadrature
+
+\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]\leq\frac{1}{\mathbb{P}(X>x^{*})}\int_{-\infty}^{+\infty}(g(x)-g_{N}(x))^{2}f_{X}(x)dx=\frac{1}{\mathbb{P}(X>x^{*})}\left(\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}\right)
+
+Les deux fonctions g(x) et g_{N}(x) sont égaux dans les points de collocation donc la borne supérieure est donnée par
+
+\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]\leq\frac{1}{\mathbb{P}(X>x^{*})}\frac{N!\sqrt{\pi}}{2^{N}}\frac{\Psi^{(2N)}(\hat{\xi})}{(2N)!}
+
+On peut montrer que pour x_{*}>0\mathbb{P}(X>x^{*})\geq\frac{1}{\sqrt{2\pi}}e^{-x_{*}^{2}/2}\left(\frac{1}{x^{*}}-\frac{1}{x_{*}^{3}}\right)
+
+et pour x^{*}>1
+
+\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]\leq\pi\sqrt{2}e^{-x_{*}^{2}/2}\frac{x_{*}^{3}}{x_{*}^{2}-1}\frac{N!}{2^{N}(2N)!}\Psi^{(2N)}(\hat{\xi})
+
+Donc on a \lim_{N\to\infty}\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]=0
+
+En utilisant l'inégalité de Chebychev on trouve
+
+\mathbb{P}((Y-Y_{N})^{2}\geq a)\leq\frac{1}{a}\mathbb{E}((Y-Y_{N})^{2})=\frac{\varepsilon_{N}}{a}\to0
+
+• \textbf{Elargissement de la grille de collocation}
+
+Soit X\sim\mathcal{N}(0,1) et N le nombre de points de collocation. En calculant F_{\mathcal{N}(0,1)}(x_{i}) pour i\in\llbracket1,N\rrbracket on remarque que F_{\mathcal{N}(0,1)}(x_{1}) et F_{\mathcal{N}(0,1)}(x_{N}) sont prohce respectivement de 0 et de 1. Ceci est plus prononcé quand N est grand. Le calcul F_{Y}^{-1}(F_{\mathcal{N}(0,1)}(.)) peut révéler des instabilités numériques quand F_{\mathcal{N}(0,1)}(.)\to0 ou F_{\mathcal{N}(0,1)}(.)\to1. Pour contourner ceci, il est proposé de définir une nouvelle variable \hat{X}et calculer F_{\hat{X}}(x_{i}) à la place de F_{X}(x_{i}). On choisit la variable \hat{X}\sim\mathcal{N}(0,\sigma^{2}) tel que
+
+F_{\mathcal{N}(0,\sigma^{2})}(x_{1})=p_{min},\quad ou\quad F_{\mathcal{N}(0,\sigma^{2})}(x_{N})=p_{max}
+
+et donc 
+
+\sigma=\frac{x_{1}}{F_{\mathcal{N}(0,1)}^{-1}(p_{min})}\quad ou\quad\sigma=\frac{x_{N}}{F_{\mathcal{N}(0,1)}^{-1}(p_{max})}
+
+pour bien choisir les p_{min}et p_{max}il faut avoir une idée sur la distribution d'intérêt. Si elle a des queues lourdes il faut prendre p_{max} assez grand pour que la queue soit bien approximée par le polynôme. Une fois le \sigma déterminé l'échantillonage se fait y_{i}=F_{Y}^{-1}(F_{\mathcal{N}(0,\sigma^{2})}(x_{i})), d'où
+
+y_{n}\approx g_{N}(\xi_{n})=\sum_{i=1}^{N}F_{Y}^{-1}\left(F_{\mathcal{N}(0,1)}\left(\frac{x_{i}}{\sigma}\right)\right)l_{i}(\xi_{n}),\quad l_{i}(\xi_{n})=\prod_{j=1,i\neq j}^{N}\frac{\sigma\xi_{n}-x_{i}}{x_{i}-x_{j}}
 
 \textbf{Collocating local volatility model}
 
@@ -91,3 +181,5 @@ avec la solution:
 X(t)=X_{0}e^{-\lambda t}+\theta(1-e^{-\lambda t})+\frac{\eta}{\sqrt{2\lambda}}e^{-\lambda t}W^{\mathbb{Q}}(e^{2\lambda t}-1)
 
 ici la filtration du mouvement brownien dépend du paramètre \lambda donc si on prend deus processus OU avec \lambda_{1}\neq\lambda_{2} on aura des trajectoires g(X_{1}(t))\neq g(X_{2}(t)). 
+
+\textbf{Least square Monte carlo}
