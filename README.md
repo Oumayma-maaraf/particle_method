@@ -1,24 +1,24 @@
 \textbf{Stochastic collocation}
 
-Soit Y une variable aléatoire à valeurs réelles avec une fonction de répartition strictement croissante F_{Y}(y). Soit U\sim\mathcal{U}([0,1]) et u_{n}un échantillon de U. Classiquement pour générer un échantillon de Y on fait 
+Soit Y une variable aléatoire à valeurs réelles et F_{Y}(y) sa fonction de répartition qui est strictement croissante . Soit U\sim\mathcal{U}([0,1]) et u_{n} un échantillon de U. Classiquement pour générer un échantillon de Y on fait 
 
 y_{n}=F_{Y}^{-1}(u_{n})
 
-Or dans le cas où la fonction inverse de répartition n'a pas de forme analytique cette procédure devient couteuse.
+Or dans le cas où la fonction inverse de répartition n'a pas de forme analytique cette procédure devient couteuse, car il faut faire autant d'inversion que d'échantillon.
 
-On alors considère une autre variable X, pour laquelle F_{X}^{-1}(u_{n}) est moins couteuse que celle de Y. On sait que F_{Y}(Y)\overset{d}{=}F_{X}(X) donc y_{n}=F_{Y}^{-1}(F_{X}(\xi_{n})) où y_{n},\xi_{n} les échantillons de Y,X respectivement. Ici encore l'échantillonement de Y reste couteux. Il faut donc trouver une relation alternative pour ne pas faire l'invesion F_{Y}^{-1}pour tous l'échantillonf de X.
+On considère alors une autre variable X, pour laquelle F_{X}^{-1}(.) est moins couteuse que celle de Y. On sait que F_{Y}(Y)\overset{d}{=}F_{X}(X) donc y_{n}=F_{Y}^{-1}(F_{X}(\xi_{n})) où y_{n},\xi_{n} les échantillons de Y,X respectivement. Ici encore l'échantillonement de Y reste couteux, car on fait autant d'inversion que d'échantillon. Il faut donc trouver une relation alternative pour ne pas faire l'invesion F_{Y}^{-1}pour tout l'échantillon de X.
 
 On cherche donc une fonction de manière à ce que g(.)=F_{Y}^{-1}(F_{X}(.)) donc à ce que Y\overset{d}{=}g(X), et telle que l'évaluation de cette fonction n'est pas couteuse.
 
 Dans la méthode de collocation stochastique on approxime Y par une foncition g de X en terme d'expansion de Lagrange l_{i}(\xi_{n}):y_{n}\approx g_{N}(\xi_{n})=\sum_{i=1}^{N}y_{i}l_{i}(\xi_{n}),\quad l_{i}(\xi_{n})=\prod_{j=1,i\neq j}^{N}\frac{\xi_{n}-x_{j}}{x_{i}-x_{j}}
 
-où \xi_{n}est un échantillon de X et x_{i},x_{j}sont des points de collocation, et y_{i}=F_{Y}^{-1}(F_{X}(x_{i})). \textbf{l}(x)=(l_{1}(x),\dots,l_{N}(x))^{T} est la base de Lagrange., telle que l_{i}(x_{j})=\delta_{ij}. Donc une fois les N points de collocation déterminés x_{i} et les N inversions F_{Y}^{-1} faites, on peut simuler nimporte quel nombre d'échantillons de Y et ceci par l'évaluation du polynome g_{N}(.). On parle ici de \textit{Stochastic Collocation Monte Carlo sampler}.
+où \xi_{n}est un échantillon de X et x_{i},x_{j}sont des points de collocation (N est généralement <8), et y_{i}=F_{Y}^{-1}(F_{X}(x_{i})). \textbf{l}(x)=(l_{1}(x),\dots,l_{N}(x))^{T} est la base de Lagrange., telle que l_{i}(x_{j})=\delta_{ij}. Donc une fois les N points de collocation déterminés x_{i} et les N inversions F_{Y}^{-1} faites, on peut simuler nimporte quel nombre d'échantillons de Y et ceci par l'évaluation du polynome g_{N}(.). On parle ici de \textit{Stochastic Collocation Monte Carlo sampler}.
 
 • \textbf{Points de collocation}
 
 On sait que g_{N}(x)=\sum_{i=1}^{N}y_{i}l_{i}(x),\quad l_{i}(x)=\prod_{j=1,i\neq j}^{N}\frac{x-x_{j}}{x_{i}-x_{j}}
 
-Poue éviter de faire O(N^{2}) opération pour chaque nouvelle valeurs de x, on considère un poids \lambda_{i} défini par 
+Pour éviter de faire O(N^{2}) opération pour chaque nouvelle valeurs de x, on considère un poids \lambda_{i} défini par 
 
 \lambda_{i}=\frac{1}{\prod_{j=1,j\neq i}^{N}(x_{i}-x_{j})},\quad i\in\llbracket1,N\rrbracket
 
@@ -30,7 +30,7 @@ donc g_{N}(x)=\sum_{i=1}^{N}\frac{y_{i}\lambda_{i}}{(x-x_{i})}l(x)
 
 On dit qu'une sequence de polynomes orthogonaux \{p_{i}\}_{i=0}^{N} avec degré deg(p_{i})=i est orthogonale en L^{2}par rapport à la densité de f_{X}(X) de X, si
 
-\mathbb{E}(p_{i}(X)p_{j}(X))=\delta_{ij}\mathbb{E}(p_{i}^{2}(X)),\quad i,j=0,\dots,N
+\mathbb{E}\left[p_{i}(X)p_{j}(X)\right]=\delta_{ij}\mathbb{E}\left[p_{i}^{2}(X)\right],\quad i,j=0,\dots,N
 
 Et pour toutes densité f_{X}(.), il existe une sequence de polynomes orthogonaux p_{i}(x) unique avec comme degré deg(p_{i}(x))=i, cette sequence se construit par 
 
@@ -53,6 +53,23 @@ A.2- Les zeros x_{i},i\in\llbracket1,N\rrbracket du polynôme orthogonal p_{N}(X
 0 & 0 & \sqrt{\beta_{N-2}} & \alpha_{N-1} & \sqrt{\beta_{N-1}}\\
 0 & 0 & 0 & \sqrt{\beta_{N-1}} & \alpha_{N}
 \end{array}\right)
+
+Les points de collocation pour une variable X\sim\mathcal{N}(0,1) sont donnés par 
+
+\begin{array}{cccccccccccc}
+x_{i} & N=2 & N=3 & N=4 & N=5 & N=6 & N=7 & N=8 & N=9 & N=10 & N=11\\
+x_{1} & -1 & -1.7321 & -2.3344 & -2.8570 & -3.3243 & -3.7504 & -4.1445 & -4.5127 & -4.8595 & -5.1880\\
+x_{2} & 1 & 0.0 & -0.7420 & -1.3556 & -1.8892 & -2.3668 & -2.8025 & -3.2054 & -3.5818 & -3.9362\\
+x_{3} &  & 1.7321 & 0.7420 & 0.0 & -0.6167 & -1.1544 & -1.6365 & -2.0768 & -2.4843 & -2.8651\\
+x_{4} &  &  & 2.3344 & 1.3556 & 0.6167 & 0.0 & -0.5391 & -1.0233 & -1.4660 & -1.8760\\
+x_{5} &  &  &  & 2.8570 & 1.8892 & 1.1544 & 0.5391 & 0.0 & -0.4849 & -0.9289\\
+x_{6} &  &  &  &  & 3.3243 & 2.3668 & 1.6365 & 1.0233 & 0.4849 & 0.0\\
+x_{7} &  &  &  &  &  & 3.7504 & 2.8025 & 2.0768 & 1.4660 & 0.9289\\
+x_{8} &  &  &  &  &  &  & 4.1445 & 3.2054 & 2.4843 & 1.8760\\
+x_{9} &  &  &  &  &  &  &  & 4.5127 & 3.5818 & 2.8651\\
+x_{10} &  &  &  &  &  &  &  &  & 4.8595 & 3.9362\\
+x_{11} &  &  &  &  &  &  &  &  &  & 3.9362
+\end{array}
 
 • \textbf{Analyse d'erreur}
 
@@ -154,7 +171,7 @@ les valeurs de collocation sont g(T_{i},x_{ij}):=s_{ij}=F_{\hat{S}(T_{i})}^{-1}(
 
 et on a montré (dans la section précédente) que l'erreur de quadrature \varepsilon_{i,N}\to0 pour la maturité T_{i} exponentiellement en N (N prend des valeurs <8).
 
-Une fois on a la grille \{T_{i},x_{ij},s_{ij}\} on passe à l'étape suivante de la calibration en imposant la continuité à la fonction g(t,x) pour pouvoir simuler S(t) pour des maturités intérmédiaires de celles du marché (t\in]T_{i},T_{i+1}[). Il faut dans un premier temps déterminer les points de collocation x_{j}(t),\quad j\in\llbracket1,N\rrbracket,\quad t\in]T_{i},T_{i+1}[, cette procédure est décrite dans la section suivante. Pour déteminer les valeur de collocation s_{j}(t) on fait l'interpolation linéaire suivante:
+Une fois on a la grille \{T_{i},x_{ij},s_{ij}\} on passe à l'étape suivante de la calibration en imposant la continuité à la fonction g(t,x) pour pouvoir simuler S(t) pour des maturités autres que celles du marché (t\in]T_{i},T_{i+1}[). Il faut dans un premier temps déterminer les points de collocation x_{j}(t),\quad j\in\llbracket1,N\rrbracket,\quad t\in]T_{i},T_{i+1}[, cette procédure est décrite dans la section suivante. Pour déteminer les valeur de collocation s_{j}(t) on fait l'interpolation linéaire suivante:
 
 \forall t\in[T_{i},T_{i+1}[,\quad s_{j}(t)=s_{ij}+(s_{i+1j}-s_{ij})\frac{t-T_{i}}{T_{i+1}-T_{i}},\forall j\in\llbracket1,N\rrbracket
 
@@ -174,7 +191,7 @@ x_{i}(t)=\mathbb{E}(X(t))+\sqrt{\mathbb{V}(X(t))}x_{i}^{\mathcal{N}(0,1)},\quad 
 
 et pour avoir les x_{i}^{\mathcal{N}(0,1)}on utilise les abscisse de Gauss-Hermite x_{i}^{H}en effet on a la relation suivante x_{i}^{\mathcal{N}(0,1)}=\sqrt{2}x_{i}^{H}.
 
-La question qui se pose est comment choisr les paramètres du processus X(t). Considérons X_{1}(t)=X_{1}(0)+a_{1}t+b_{1}W^{\mathbb{Q}}(t) et X_{2}(t)=X_{2}(0)+a_{2}t+b_{2}W^{\mathbb{Q}}(t) (avec le même mouvement brownien) alors on a X_{2}(t)=c_{1}+c_{2}X_{1}(t) donc d'après le résultat précédent F_{X_{1}(t)}(x_{i}^{X_{1}(t)})=F_{X_{2}(t)}(x_{i}^{X_{2}(t)}) et comme la fonction g est complétement déterminée par les fonctions de répartitions alors g(X_{1}(t))=g(X_{2}(t)) p.s. Donc dans ce cas le choix des paramètres du processus X(t) n'impacte pas les résultats de la méthode de collocation. Par contre si on considère comme processus kernel un Ornstein-Uhlenbeck (OU) de dynamique dX(t)=\lambda(\theta-X(t))dt+\eta dW^{\mathbb{Q}}(t)
+La question qui se pose est comment choisir les paramètres du processus X(t). Considérons X_{1}(t)=X_{1}(0)+a_{1}t+b_{1}W^{\mathbb{Q}}(t) et X_{2}(t)=X_{2}(0)+a_{2}t+b_{2}W^{\mathbb{Q}}(t) (avec le même mouvement brownien) alors on a X_{2}(t)=c_{1}+c_{2}X_{1}(t) donc d'après le résultat précédent F_{X_{1}(t)}(x_{i}^{X_{1}(t)})=F_{X_{2}(t)}(x_{i}^{X_{2}(t)}) et comme la fonction g est complétement déterminée par les fonctions de répartitions alors g(X_{1}(t))=g(X_{2}(t)) p.s. Donc dans ce cas le choix des paramètres du processus X(t) n'impacte pas les résultats de la méthode de collocation. Par contre si on considère comme processus kernel un Ornstein-Uhlenbeck (OU) de dynamique dX(t)=\lambda(\theta-X(t))dt+\eta dW^{\mathbb{Q}}(t)
 
 avec la solution:
 
@@ -183,3 +200,73 @@ X(t)=X_{0}e^{-\lambda t}+\theta(1-e^{-\lambda t})+\frac{\eta}{\sqrt{2\lambda}}e^
 ici la filtration du mouvement brownien dépend du paramètre \lambda donc si on prend deus processus OU avec \lambda_{1}\neq\lambda_{2} on aura des trajectoires g(X_{1}(t))\neq g(X_{2}(t)). 
 
 \textbf{Least square Monte carlo}
+
+Soient T>0 un horizon de temps fixé et \mathbb{Q}l'unique probabilité risque neutre. On suppose que pour tout w\in\Omega, la trajectoire \tilde{w}:t\mapsto S_{t}(w) à valeurs dans \mathbb{R}^{d} appartient à un certain espace fonctionnelle que l'on note \mathbb{D}_{d}([0,T]):=\mathbb{D}_{d}([0,T],\mathbb{R}^{d}).
+
+Soit F_{T}:\mathbb{D}_{d}([0,T))\mapsto\mathbb{R}^{l_{T}}une fonctionnelle mesurable. Soit g:\mathbb{R}^{l_{T}}\mapsto\mathbb{R}une fonction borélienne.
+
+On note X le payoff stochastique d'un actif contingent. X est \mathcal{F}_{T} mesurable. Le prix de l'actif contingent est défini, à tout instant t\in[0,T] par:
+
+\mathbb{E}_{\mathbb{Q}}\left(X\exp\left(-\int_{t}^{T}r_{s}ds\right)\bigg|\mathcal{F}_{t}\right)
+
+On suppose que (r_{s})_{s}est constant à tout instant et on s'intéresse particulièrement à \mathbb{E}_{\mathbb{Q}}(X|\mathcal{F}_{t})
+
+On suppose que X\in L^{2}(\mathbb{Q}), on a \mathbb{E}_{\mathbb{Q}}(X|\mathcal{F}_{t})=g(F_{t}(S))
+
+donc g\in L^{2}\left(\mathbb{R}^{l_{t}},\mathcal{B}(\mathbb{R}^{l_{t}}),\mathbb{Q}_{F_{t}(Z)}\right)et on note L_{t}^{2}:=L^{2}\left(\mathbb{R}^{l_{t}},\mathcal{B}(\mathbb{R}^{l_{t}}),\mathbb{Q}_{F_{t}(Z)}\right)
+
+On sait que L_{t}^{2}muni du produit scalaire:
+
+\langle f,h\rangle_{t}=\int_{\mathbb{R}^{l_{t}}}f(x)g(x)d\mathbb{Q}_{F_{t}(Z)}(x)=\mathbb{E_{Q}}\left[f(F_{t}(S))h(F_{t}(S))\right]
+
+est un espace d'hilbert séparable. Elle admet donc une base hilbertienne dénombrable:\left(\exists(\nu_{k})_{k\geq0}\in(L_{t}^{2})^{\mathbb{N}}orthonormale\right)\quad\left(\exists(\beta_{k})_{k\geq0}\in\mathbb{R}^{\mathbb{N}}\right):\quad g=\sum_{k=0}^{+\infty}\beta_{k}\nu_{k}
+
+tel que
+
+(\forall k\in\mathbb{N}):\quad\beta_{k}=\langle g,\nu_{k}\rangle=\mathbb{E_{Q}}\left[g\left(F_{t}(S)\right)\nu_{k}\left(F_{t}(S)\right)\right]=\mathbb{E_{Q}}\left[\mathbb{E_{Q}}(X|\mathcal{F}_{t})\nu_{k}\left(F_{t}(S)\right)\right]=\mathbb{E_{Q}}\left[\mathbb{E_{Q}}(X\nu_{k}\left(F_{t}(S)\right)|\mathcal{F}_{t}\right]
+
+ainsi:
+
+(\forall k\in\mathbb{N}):\quad\beta_{k}=\mathbb{E_{Q}}(X\nu_{k}(F_{t}(S))
+
+On définit l'erreur de projection par p_{t}(F_{T}(S)):=X-g(F_{T}(S))
+
+La méthode LSMC essaye d'estimer la fonction g à partir de son éciture dans la base hilberienne. En utilisant des données simulées sous \mathbb{Q}. Toutefois, en pratique, on ne peut pas simuler une infinité de données. Sur ce on essaye de travailler sur une sous-famille finie de (\nu_{k})_{k}que l'on note (\nu_{k})_{1\leq k\leq K}.
+
+Ainsi on approxime g par g_{K}définie parg_{K}:=\sum_{k=1}^{K}\beta_{k}\nu_{k}
+
+l'erreur d'approximation est définie par:
+
+a_{K}:=g-g_{K}
+
+On a a_{K}\underset{K\to+\infty}{\to}0 et âr orthogonalité de la base on a\langle g_{K},a_{K}\rangle=\mathbb{E_{Q}}[g_{K}(F_{t}(S))a_{K}(F_{t}(S))]=0
+
+On peut maintenant écrire la régression suiavnte:X=g_{K}(F_{t}(S))+a_{K}(F_{t}(S))+p_{t}(F_{T}(S))
+
+Maintenant, étant donné un échantillon simulé de taille N: \left(\left(x^{j},A_{t}(S^{j})\right)\right)_{1\leq j\leq N} Il est naturel d'estimer g_{K}par la projection:
+
+\hat{g}_{K}:=\arg\underset{g\in\mathcal{H}_{K}}{\min}\frac{1}{N}\sum_{j=1}^{N}\left(x^{j}-g\left(A_{t}(S^{j})\right)\right)^{2}
+
+tel que
+
+\mathcal{H}_{K}:=\left\{ g:\mathbb{R}^{l_{t}}\mapsto\mathbb{R}:\left(\exists(\beta_{1},\dots,\beta_{K})\in\mathbb{R}^{K}\right),g=\sum_{k=1}^{N}\beta_{k}\nu_{k}\right\} 
+
+\textbf{Les polynômes orthogonaux de Laguerre}:
+
+Soit n\in\mathbb{N}, on définit les fonctions \psi_{n} et L_{n}par
+
+\left(\forall t\in\mathbb{R}\right):\quad\psi_{n}(t)=e^{-t}\frac{t^{n}}{n!};\quad L_{n}(t)=\psi_{n}^{(n)}(t)e^{t}
+
+La famille \left(L_{n}\right)_{n}est une famille de polynôme de deg n appelé: polynôme de Laguerre. On peut démontrer que:\left(\forall n\in\mathbb{N}\right):\quad L_{n}:=\sum_{k=0}^{n}\mbox{C}_{n}^{k}\frac{(-1)^{k}}{k!}X^{k}
+
+Utilisant ces polynômes, on désire construire une base orthonormale de l'espace L^{2}(\mathbb{R}_{+}). On définit alors la famille des fonctions (\phi_{n})_{n}, par:
+
+\left(\forall t\in\mathbb{R}_{+}\right):\quad\phi_{n}(t):=e^{-\frac{t}{2}}L_{n}(t)
+
+On a bien \left(\phi_{n}\right)_{n}\in L^{2}(\mathbb{R}_{+})^{\mathbb{N}}et 
+
+\left(\forall n,p\in\mathbb{N}\right):\quad\langle\phi_{n},\phi_{p}\rangle=\int_{0}^{+\infty}L_{n}(t)L_{p}(t)e^{-t}dt=\delta_{n,p}
+
+La dernière égalité est obtenur par l'othonormalité de la famille des polynômes de Laguerre par rapport aux produit scalaire défini sur \mathbb{R}[X], par:
+
+\langle P,Q\rangle:=\int_{0}^{+\infty}P(t)Q(t)e^{-t}dt
