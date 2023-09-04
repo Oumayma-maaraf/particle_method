@@ -1,3 +1,97 @@
+\textbf{Problèmatique}
+
+On considère un portefeuille de transactions entre une banque et une contrepartie collatéralisée générant entre deux temps.
+
+On considère un portefeuille de transactions entre une banque et une contrepartie collatéralisée générant \Pi(t,T) entre t et la maturité T. La valeur de ce portefeuille en t est V_{t}=\mathbb{E}(\Pi(t,T)|\mathcal{F}_{t})
+
+On note \tau_{c}le temps de défault de la contrepartiertie et R_{c}le taux de recouvrement dans le cas du défault. La CVA est l'espérence des pertes futures dues aux défauts conditionnel aux états de crédit. On peut la voir comme la différence entre le prix du produit avec et sans prendre en considération le défaut de la contrepartie. En faisant l'hypothèse de l'indépendance entre le temps de défaut et la valeur du portefeuille, on trouve CVA(t)=-(1-R_{c})\int_{t}^{T}\mathbb{E}\left[B(t,T)(V_{s}-C_{s})_{+}|\mathcal{F}_{t}\right]d\mathbb{Q}(\tau_{c}<T)
+
+Donc pour t=0 on a 
+
+CVA(0)=-(1-R_{c})\int_{0}^{T}\mathbb{E}\left[B(0,T)(V_{s}-C_{s})_{+}\right]d\mathbb{Q}(\tau_{c}<T)
+
+Où B(0,t)=\exp\left(-\int_{0}^{t}r_{s}ds\right) est le facteur d'actualisation et C_{t} le collatéral à la date t en effet on a C_{t}=f(V_{t}) avec f une fonction déterministe.
+
+Considérant t_{0}=t<t_{1}<\dots<t_{N}=T, en pratique la CVA est calculée par 
+
+CVA(t)=-(1-R_{c})\sum_{k=1}^{N}\mathbb{E}\left[B(t,t_{k})(V_{t_{k}}-C_{t_{k}})_{+}\bigg|\mathcal{F}_{t}\right]\mathbb{Q}(t_{k-1}<\tau_{c}<t_{k})
+
+Dans le but d'augmenter la précision du calcul du CVA(0) tout en gardant le nombre de simulation des sous jacents constant (N), on peut soit s'intéresser à \mathbb{E}\left[B(0,T)(V_{t}-C_{t})_{+}\right] et faire des techniques de réduction de variance, soit s'intéresser à V_{t}=\mathbb{E}(\Pi(t,T)|\mathcal{F}_{t}) et essayer d'augmenter la précision de son calcul. Dans le dernier cas, il peut choisir pour notre actif sous jacent une dynamique qui modélise bien son cours dans le marché et les prix des options qui ont dépendent. Or qu'en xVa on travaille sur plusieurs asset classe en même temps avec des structures de corrélations assez complexes et on ne se permet pas de faire pour chaque asset classe un modèle sophistiqué. Du coup ce qu'on propose dans ce travail est une approche modèle free dans laquelle (ou dépend d'un modèle simple) afin de reproduire les résultats pour plusieurs asset classes. 
+
+\textbf{Modèle de marché}
+
+On considère que le marché est donné par un modèle qu'on spécifiera. Soit (\Omega,(\mathcal{F}_{t})_{0\leq t},\mathbb{P}) un espace de probabilité filtré, soit W_{t} un mouvement brownien sous \mathbb{P}. L'actif sans risque suit la dynamique suivantedB_{t}=rB_{t}dt
+
+On considère un modèle à volatilité locale donné par le modèle CEV (Constant elasticity of variance). Dans ce modèle la volatilité est une fonction puissance du niveau de sous jacent:\frac{dS_{t}}{S_{t}}=\mu dt+\sigma_{0}S_{t}^{\alpha-1}dW_{t},
+
+Le modèle de Black-Scholes et le modèle gaussien sont des cas limites de cette équation vec \alpha=1 et \alpha\to0 respectivement. On suppose que le prix forward du sous jacent F_{t}=e^{r(T-t)}S_{t}suit le modèle CEV
+
+dF_{t}=\sigma_{0}F_{t}^{\alpha}dW_{t},\quad0<\alpha\leq1
+
+La valeur 0 est une barrière absorbante, si F_{t}=0 pour un t, alors F_{s}=0 pour tout s\geq t.
+
+\textbf{Propriété de martingale}
+
+On montre que pour 0<\alpha\leq1, F_{t} définit une vraie martiangle de carré intégrable sur [0,T] pour tout T<\infty. Soit \tau_{n}=\inf\{t:F_{t}\geq n\}, F_{T\wedge\tau_{n}}est alors de carré intégrable, et on a pour 0<\alpha\leq1\mathbb{E}[F_{\tau_{n}\wedge T}^{2}]=\sigma_{0}\mathbb{E}\left[\int_{0}^{\tau_{n}\wedge T}F_{t}^{2\alpha}dt\right]\leq\sigma_{0}^{2}\mathbb{E}\left[\int_{0}^{\tau_{n}\wedge T}(1+F_{t}^{2})dt\right]\leq\sigma_{0}^{2}\mathbb{E}\left[\int_{0}^{T}(1+F_{t\wedge\tau_{n}}^{2})dt\right]
+
+Par le lemme de Gronwall on a:
+
+\mathbb{E}\left[F_{\tau_{n}\wedge T}^{2}\right]\leq\sigma_{0}^{2}Te^{\sigma_{0}^{2}T}
+
+d'où par convergence monotone\mathbb{E}\left\{ \sigma_{0}^{2}\int_{0}^{T}F_{t}^{2\alpha}dt\right\} <\infty
+
+\textbf{Volatilité implicite}
+
+La forme de la volatilité implicite du modèle CEV est connue grâce à l'approximation asymptotique de Hagan et Woodward:
+
+\sigma^{imp}(K,T)=\frac{\sigma_{0}}{F_{m}^{1-\alpha}}\left\{ 1+\frac{(1-\alpha)(2+\alpha)}{24}\left(\frac{F_{0}-K}{F_{m}}\right)^{2}+\frac{(1-\alpha)^{2}}{24}\frac{\sigma_{0}^{2}T}{F_{m}^{2-2\alpha}}+\dots\right\} ,\quad F_{m}=\frac{1}{2}(F_{0}+K)
+
+au premier ordre, on a donc \sigma^{imp}(K,T)\approx\frac{\sigma_{0}}{F_{m}^{1-\alpha}}: la volatilité implicite a la même forme que la volatilité locale mais avec une pente à la monnaie plus petite.
+
+\textbf{Aspect pratique}
+
+Pour utiliser ce modèle en tant que marché, on diffuse notre sous jacent S_{t} on génère une surface de prix pour plusieurs maturités et strikes après on implicite les volatilités on se retouve donc avec une surface de volatilité.
+
+On introduit maintenant la première méthode \textit{empirique}dans laquelle on essaye de reconstruire la distribution de F_{S_{T}}ici je vais insérer des graphs pour illustrer la densité et comment on la reconstruit faire les traits de K_i 
+
+\textbf{Déformation d'échantillon}
+
+Soit T une maturité, on suit la procédure suivante 
+
+• On cherche 0=K_{0}<K_{1}<\dots<K_{n}<K_{n+1}=+\infty tels que \mathbb{Q}(S_{T}\in[K_{i},K_{i+1}[)=\frac{1}{n+1}, càd de résoudre le système d'équations suivant \begin{cases}
+F_{S_{T}}(K_{1})-F_{S_{T}}(K_{0}) & =\frac{1}{n+1}\\
+\vdots & \vdots\\
+1-F_{S_{T}}(K_{n}) & =\frac{1}{n+1}
+\end{cases}
+
+• Simuler \left(S_{T}^{i}\right)_{0\leq i\leq N}et les ordonner \left(\tilde{S}_{T}^{i}\right)_{0\leq i\leq N}
+
+• On construit n bucket (B_{i}) tels que chaque bucket contient \left\lfloor \frac{N}{n}\right\rfloor simulations ordonnées. 
+
+• On définie \forall i\in\llbracket0,n\rrbracket,\quad\mathcal{I}_{i}=\{\mbox{indexes of}\quad\tilde{S}_{T}\in B_{i}\}et Card_{B}=\#B. On assure que \forall i\in\llbracket0,n\rrbracket, j\in\mathcal{I}_{i} \tilde{S}_{T}^{j}\in[K_{i},K_{i+1}]. Pour ce faire on fait la transformation suivante sur tous les éléments de chaque bucket i\in\llbracket0,n-1\rrbracket\begin{cases}
+\tilde{S}_{T}^{0*} & =K_{i}\\
+\tilde{S}_{T}^{1*} & =\tilde{S}_{T}^{0*}+\frac{\tilde{S}_{T}^{n*}-\tilde{S}_{T}^{0*}}{\tilde{S}_{T}^{n}-\tilde{S}_{T}^{0}}(\tilde{S}_{T}^{1}-\tilde{S}_{T}^{0})\\
+\vdots & \vdots\\
+\tilde{S}_{T}^{n*} & =K_{i+1}
+\end{cases}
+
+Pour le dernier bucket on fait la transformation suivante \forall j\in\mathcal{I}_{n},\quad\tilde{S}_{t}^{j*}=\max(\tilde{S}_{t}^{j},K_{n})
+
+• On résoud le système d'équation suivant (on cherche \forall i\in\llbracket n,0\rrbracket \alpha_{i}), on note Num le numéraire \frac{1}{N}\sum_{l\in\bigcup_{j=1}^{n}\mathcal{I}_{j}}\frac{(\hat{S}_{T}^{l*}-K_{i})_{+}}{Num^{l}}=\mathcal{P}^{theo}(C(T,K_{i}))
+
+On prend K_{n+1}=\max(N\mathcal{P}^{theo}(C(T,K_{i}))+K_{n},\max(\tilde{S}_{T}^{n*})). Si l\in\mathcal{I}_{i}\hat{S}_{T}^{l*}=\begin{cases}
+\alpha_{i}\tilde{S}_{T}^{l*}+(1-\alpha_{i})K_{i} & si\quad\frac{1}{N}\left(\sum_{l\in\mathcal{I}_{i}}\frac{(\tilde{S}_{T}^{l*}-K_{i})_{+}}{Num^{l}}+\sum_{l\in\bigcup_{j=i+1}^{n}\mathcal{I}_{j}}\frac{(\hat{S}_{T}^{l*}-K_{i})+}{Num^{l}}\right)\geq\mathcal{P}^{theo}(C(T,K_{i}))\\
+\alpha_{i}\tilde{S}_{T}^{l*}+(1-\alpha_{i})K_{i+1} & si\quad\frac{1}{N}\left(\sum_{l\in\mathcal{I}_{i}}\frac{(\tilde{S}_{T}^{l*}-K_{i})_{+}}{Num^{l}}+\sum_{l\in\bigcup_{j=i+1}^{n}\mathcal{I}_{j}}\frac{(\hat{S}_{T}^{l*}-K_{i})+}{Num^{l}}\right)\leq\mathcal{P}^{theo}(C(T,K_{i}))
+\end{cases}
+
+On peut résoudre de manière itérative l'équation précédente où on note x\in\{i,i+1\}:
+
+how to pass time exactly how to pass two hours how i wil show do something anything o r nothing just pretend to be super 
+
+\sum_{l\in\bigcup_{j=i}^{n}}\frac{(\hat{S}_{T}^{l*}-K_{i})}{Num^{l}}=N\mathcal{P}^{theo}(C(T,K_{i}))
+
+\sum_{l\in\mathcal{I}_{i}}\frac{\hat{S}_{T}^{l*}}{Num^{l}}-K_{i}\sum_{l\in\mathcal{I}_{i}}\frac{1}{Num^{l}}-K_{i}\sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}\frac{1}{Num^{l}}+\sum_{k=i+1}^{n}\sum_{l\in\mathcal{\mathcal{I}}_{k}}\frac{\hat{S}_{T}^{l*}}{Num^{l}}=N\mathcal{P}^{theo}(C(T,K_{i}))
+
 \textbf{Stochastic collocation}
 
 Soit Y une variable aléatoire à valeurs réelles et F_{Y}(y) sa fonction de répartition qui est strictement croissante . Soit U\sim\mathcal{U}([0,1]) et u_{n} un échantillon de U. Classiquement pour générer un échantillon de Y on fait 
@@ -8,15 +102,15 @@ Or dans le cas où la fonction inverse de répartition n'a pas de forme analytiq
 
 On considère alors une autre variable X, pour laquelle F_{X}^{-1}(.) est moins couteuse que celle de Y. On sait que F_{Y}(Y)\overset{d}{=}F_{X}(X) donc y_{n}=F_{Y}^{-1}(F_{X}(\xi_{n})) où y_{n},\xi_{n} les échantillons de Y,X respectivement. Ici encore l'échantillonement de Y reste couteux, car on fait autant d'inversion que d'échantillon. Il faut donc trouver une relation alternative pour ne pas faire l'invesion F_{Y}^{-1}pour tout l'échantillon de X.
 
-On cherche donc une fonction de manière à ce que g(.)=F_{Y}^{-1}(F_{X}(.)) donc à ce que Y\overset{d}{=}g(X), et telle que l'évaluation de cette fonction n'est pas couteuse.
+On cherche donc une fonction g de manière à ce que g(.)=F_{Y}^{-1}(F_{X}(.)) donc à ce que Y\overset{d}{=}g(X), et telle que l'évaluation de cette fonction n'est pas couteuse.
 
-Dans la méthode de collocation stochastique on approxime Y par une foncition g de X en terme d'expansion de Lagrange l_{i}(\xi_{n}):y_{n}\approx g_{N}(\xi_{n})=\sum_{i=1}^{N}y_{i}l_{i}(\xi_{n}),\quad l_{i}(\xi_{n})=\prod_{j=1,i\neq j}^{N}\frac{\xi_{n}-x_{j}}{x_{i}-x_{j}}
+Dans la méthode de collocation stochastique on approxime Y par une fonction g de X en terme d'expansion de Lagrange l_{i}(\xi_{n}):y_{n}\approx g_{N}(\xi_{n})=\sum_{i=1}^{N}y_{i}l_{i}(\xi_{n}),\quad l_{i}(\xi_{n})=\prod_{j=1,i\neq j}^{N}\frac{\xi_{n}-x_{j}}{x_{i}-x_{j}}
 
 où \xi_{n}est un échantillon de X et x_{i},x_{j}sont des points de collocation (N est généralement <8), et y_{i}=F_{Y}^{-1}(F_{X}(x_{i})). \textbf{l}(x)=(l_{1}(x),\dots,l_{N}(x))^{T} est la base de Lagrange., telle que l_{i}(x_{j})=\delta_{ij}. Donc une fois les N points de collocation déterminés x_{i} et les N inversions F_{Y}^{-1} faites, on peut simuler nimporte quel nombre d'échantillons de Y et ceci par l'évaluation du polynome g_{N}(.). On parle ici de \textit{Stochastic Collocation Monte Carlo sampler}.
 
 • \textbf{Points de collocation}
 
-On sait que g_{N}(x)=\sum_{i=1}^{N}y_{i}l_{i}(x),\quad l_{i}(x)=\prod_{j=1,i\neq j}^{N}\frac{x-x_{j}}{x_{i}-x_{j}}
+Les points de collocation optimaux sont choisis pour être les points de la quadrature de Gauss et sont définis comme les zéros du polynôme orthogonal correspondant. On sait que g_{N}(x)=\sum_{i=1}^{N}y_{i}l_{i}(x),\quad l_{i}(x)=\prod_{j=1,i\neq j}^{N}\frac{x-x_{j}}{x_{i}-x_{j}}
 
 Pour éviter de faire O(N^{2}) opération pour chaque nouvelle valeurs de x, on considère un poids \lambda_{i} défini par 
 
@@ -32,7 +126,7 @@ On dit qu'une sequence de polynomes orthogonaux \{p_{i}\}_{i=0}^{N} avec degré 
 
 \mathbb{E}\left[p_{i}(X)p_{j}(X)\right]=\delta_{ij}\mathbb{E}\left[p_{i}^{2}(X)\right],\quad i,j=0,\dots,N
 
-Et pour toutes densité f_{X}(.), il existe une sequence de polynomes orthogonaux p_{i}(x) unique avec comme degré deg(p_{i}(x))=i, cette sequence se construit par 
+Et pour toute densité f_{X}(.), il existe une sequence de polynomes orthogonaux p_{i}(x) unique avec comme degré deg(p_{i}(x))=i, cette séquence se construit par 
 
 p_{i+1}(x)=(x-\alpha_{i})p_{i}(x)-\beta_{i}p_{i-1}(x),\quad i\in\llbracket0,N-1\rrbracket
 
@@ -71,6 +165,10 @@ x_{10} &  &  &  &  &  &  &  &  & 4.8595 & 3.9362\\
 x_{11} &  &  &  &  &  &  &  &  &  & 3.9362
 \end{array}
 
+\textbf{Monotonie}
+
+Une fois les points de collocations déterminés x_{i} et les inversions correspondantes faites y_{i}=F_{Y}^{-1}(F_{X}(x_{i})) on doit construire une fonction d'approximation g_{N}(x) qui est \textit{idéalement}monotone différentiable et qui vérifie y_{i}=g_{N}(x_{i}). en effet en choisissant g_{N}(x) comme un polynôme de Lagrange en ne garantie pas la monotonie. Néanmoins la convergence du \textit{SCMC sampler} ne dépend pas sur la monotonie de g_{N}(x).
+
 • \textbf{Analyse d'erreur}
 
 On s'intéresse dans cette section à l'erreur générée par \textit{Stochastic Collocation Monte Carlo sampler}.
@@ -85,7 +183,9 @@ La première erreur est liée à l'interpolation de Lagrange, en effet la relati
 
 e_{X}(\xi_{n})=|g(\xi_{n})-g_{N}(\xi_{n})|=\bigg|\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}(\xi_{n}-x_{i})\bigg|
 
-avec x_{i}est un point de collocation, \hat{\xi}\in[\min(x),\max(x)] et x=(x_{1},\dots,x_{N})^{T}, on peut borner cette erreur en prenant \hat{\xi} l'abscisse du maximum de \bigg|\frac{d^{N}g(x)}{dx^{N}}\bigg|. 
+avec x_{i}est un point de collocation, \hat{\xi}\in[\min(x),\max(x)] et x=(x_{1},\dots,x_{N})^{T}, on peut borner cette erreur en prenant \hat{\xi} l'abscisse du maximum de \bigg|\frac{d^{N}g(x)}{dx^{N}}\bigg|. En utilisant\xi_{n}=F_{X}^{-1}(u_{n}), on trouve
+
+e_{U}(u_{n})=\bigg|g\left(F_{X}^{-1}(u_{n})\right)-g_{N}\left(F_{X}^{-1}(u_{n})\right)\bigg|=\bigg|\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}\left(F_{X}^{-1}(u_{n})-x_{i}\right)\bigg|.
 
 \textbf{Erreur de convergence en}L^{2}
 
@@ -95,7 +195,7 @@ On a Y=g(X)\approx Y_{N}\equiv g_{N}(X), où g(x)=F_{Y}^{-1}(F_{X}(x)) donc
 
 Les points de collocations x_{i} et les poinds w_{i}sont déterminés par le théorème A.2. Comme g(x_{i})=g_{N}(x_{i}),pour i\in\llbracket1,N\rrbracket l'erreur est:
 
-\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx=\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}
+\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx=\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}=\varepsilon_{N}
 
 Donc l'erreur dans L^{2} est déterminée par l'erreur de quadrature.
 
@@ -175,13 +275,13 @@ Une fois on a la grille \{T_{i},x_{ij},s_{ij}\} on passe à l'étape suivante de
 
 \forall t\in[T_{i},T_{i+1}[,\quad s_{j}(t)=s_{ij}+(s_{i+1j}-s_{ij})\frac{t-T_{i}}{T_{i+1}-T_{i}},\forall j\in\llbracket1,N\rrbracket
 
-Une fois les points de collocation x_{j}(t) et les valeurs de collocations s_{j}(t) déterminés, il faut déterminer une fonction continue differentiable g(t,X(t)) telle que g(t,x_{j}(t))=s_{j}(t). On utilise alors l'interpolation de Lagrange:
+Une fois que les points de collocation x_{j}(t) et les valeurs de collocations s_{j}(t) sont déterminés, il faut déterminer une fonction continue differentiable g(t,X(t)) telle que g(t,x_{j}(t))=s_{j}(t). On utilise alors l'interpolation de Lagrange:
 
 g(t,X(t))=\sum_{j=1}^{N}s_{j}(t)l_{j}(X(t)),\quad l_{j}(X(t))=\prod_{k=1,j\neq k}^{N}\frac{X(t)-x_{j}(t)}{x_{k}(t)-x_{j}(t)}
 
 \textbf{Processus kernel X(t)}
 
-Le processus X(t) est choisi librement à condition de posséder des moments. Une relation \textit{quasi linéaire}est favorable entre les variables X(T_{i}) et \hat{S}(T_{i}) pour réduire l'erreur d'approximation ou quand les densités de deux variables \textit{se ressemblent}. On peut donc considérer comme kernel process un brownien, processus qui suit la dynamique d'heston ou un Orlenstein Ulenbenk.
+Le processus X(t) est choisi librement à condition de posséder des moments. Une relation \textit{quasi linéaire}est favorable entre les variables X(T_{i}) et \hat{S}(T_{i}) pour réduire l'erreur d'approximation. On peut donc considérer comme kernel process un brownien, processus qui suit la dynamique d'heston ou un Orlenstein Ulenbenk.
 
 \textbf{Points de collocation pour une variable normale}: Soient X_{1}\sim\mathcal{N}(a_{1},b_{1}) et X_{2}\sim\mathcal{N}(a_{2},b_{2}) et leurs points de collocations respectifs x_{i}^{X_{1}} et x_{i}^{X_{2}}. Alors F_{X_{1}}(x_{i}^{X_{1}})=F_{X_{2}}(x_{i}^{X_{2}}) pour tous i\in\llbracket1,N\rrbracket et x_{i}^{X_{1}}=a_{1}+b_{1}x_{i}^{\mathcal{N}(0,1)} et x_{i}^{X_{2}}=a_{2}+b_{2}x_{i}^{\mathcal{N}(0,1)}, où x_{i}^{\mathcal{N}(0,1)}sont les points de collocation pour une variable normale standard.
 
@@ -189,7 +289,7 @@ En utilisant le résultat précédent, on obtient les points de collocation du p
 
 x_{i}(t)=\mathbb{E}(X(t))+\sqrt{\mathbb{V}(X(t))}x_{i}^{\mathcal{N}(0,1)},\quad i\in\llbracket1,N\rrbracket
 
-et pour avoir les x_{i}^{\mathcal{N}(0,1)}on utilise les abscisse de Gauss-Hermite x_{i}^{H}en effet on a la relation suivante x_{i}^{\mathcal{N}(0,1)}=\sqrt{2}x_{i}^{H}.
+et pour avoir les x_{i}^{\mathcal{N}(0,1)}on utilise les abscisses de Gauss-Hermite x_{i}^{H}en effet on a la relation suivante x_{i}^{\mathcal{N}(0,1)}=\sqrt{2}x_{i}^{H}.
 
 La question qui se pose est comment choisir les paramètres du processus X(t). Considérons X_{1}(t)=X_{1}(0)+a_{1}t+b_{1}W^{\mathbb{Q}}(t) et X_{2}(t)=X_{2}(0)+a_{2}t+b_{2}W^{\mathbb{Q}}(t) (avec le même mouvement brownien) alors on a X_{2}(t)=c_{1}+c_{2}X_{1}(t) donc d'après le résultat précédent F_{X_{1}(t)}(x_{i}^{X_{1}(t)})=F_{X_{2}(t)}(x_{i}^{X_{2}(t)}) et comme la fonction g est complétement déterminée par les fonctions de répartitions alors g(X_{1}(t))=g(X_{2}(t)) p.s. Donc dans ce cas le choix des paramètres du processus X(t) n'impacte pas les résultats de la méthode de collocation. Par contre si on considère comme processus kernel un Ornstein-Uhlenbeck (OU) de dynamique dX(t)=\lambda(\theta-X(t))dt+\eta dW^{\mathbb{Q}}(t)
 
@@ -239,7 +339,7 @@ l'erreur d'approximation est définie par:
 
 a_{K}:=g-g_{K}
 
-On a a_{K}\underset{K\to+\infty}{\to}0 et âr orthogonalité de la base on a\langle g_{K},a_{K}\rangle=\mathbb{E_{Q}}[g_{K}(F_{t}(S))a_{K}(F_{t}(S))]=0
+On a a_{K}\underset{K\to+\infty}{\to}0 et par orthogonalité de la base on a\langle g_{K},a_{K}\rangle=\mathbb{E_{Q}}[g_{K}(F_{t}(S))a_{K}(F_{t}(S))]=0
 
 On peut maintenant écrire la régression suiavnte:X=g_{K}(F_{t}(S))+a_{K}(F_{t}(S))+p_{t}(F_{T}(S))
 
@@ -270,3 +370,11 @@ On a bien \left(\phi_{n}\right)_{n}\in L^{2}(\mathbb{R}_{+})^{\mathbb{N}}et
 La dernière égalité est obtenur par l'othonormalité de la famille des polynômes de Laguerre par rapport aux produit scalaire défini sur \mathbb{R}[X], par:
 
 \langle P,Q\rangle:=\int_{0}^{+\infty}P(t)Q(t)e^{-t}dt
+
+On se place maintenant dans le cadre du modèle de Black-Scholes-Merton classique (d=1) Considérons le problème du pricing d'une option asiatique arithmétique et discrète:
+
+(t_{j})_{0\leq j\leq K}une subdivision ordonnée de [0,T], tel que t_{0}=0 et t_{K}=TX:=\left(\left(1+K\right)^{-1}\sum_{j=0}^{N}S_{t_{j}}-K\right)_{+}
+
+On a (\forall\tilde{w}\in D_{1}):\quad A_{t_{j}}(\tilde{w}):=(j+1)^{-1}\sum_{i=0}^{j}\tilde{w}(t_{i})
+
+Maintenant on observe que l_{t_{j}}=1 et g_{t_{j}}:\mathbb{R}_{+}\to\mathbb{R}_{+}g_{t_{j}}^{K}=\sum_{k=0}^{M}\beta_{k}\phi_{k}
