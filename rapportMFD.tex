@@ -1,0 +1,894 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{amsmath, amsfonts, dsfont, amsthm}
+\usepackage[ruled,vlined, french]{algorithm2e}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage[top=2cm, bottom=2cm, margin=2.5cm]{geometry}
+\newenvironment{allintypewriter}{\ttfamily}{\par}
+\usepackage{stmaryrd}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{lmodern} 
+\usepackage{appendix}
+\renewcommand{\appendixpagename}{Annexes}
+\renewcommand{\appendixtocname}{Annexes}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{minitoc}
+\usepackage{diagbox}
+\usepackage{tikz}
+\usepackage{appendix}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\definecolor{darkWhite}{rgb}{0.94,0.94,0.94}
+\definecolor{dg}{rgb}{0.0, 0.5, 0.0}
+\definecolor{dr}{rgb}{0.7, 0.11, 0.11}
+\definecolor{db}{rgb}{0.0, 0.0, 0.55}
+\definecolor{mb}{rgb}{0.0, 0.0, 0.8}
+\colorlet{myred}{red!60!black}
+\definecolor{sb}{rgb}{0.14, 0.16, 0.48}
+\definecolor{NB}{rgb}{0.0, 0.0, 0.5}
+\definecolor{midnightblue}{rgb}{0.1, 0.1, 0.44}
+\definecolor{specCol}{HTML}{B42C4E}
+\definecolor{myblue}{HTML}{28629D}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{dr},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{myblue},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+}
+
+
+\lstset{style=mystyle}
+
+\numberwithin{equation}{section}
+\makeatletter
+\renewcommand\@makefnmark{\hbox{\@textsuperscript{\normalfont\color{blue}\@thefnmark}}}
+\makeatother
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+
+  
+\definecolor{darkWhite}{rgb}{0.94,0.94,0.94}
+\definecolor{dg}{rgb}{0.0, 0.5, 0.0}
+\definecolor{dr}{rgb}{0.7, 0.11, 0.11}
+\definecolor{db}{rgb}{0.0, 0.0, 0.55}
+\definecolor{mb}{rgb}{0.0, 0.0, 0.8}
+\colorlet{myred}{red!60!black}
+\definecolor{sb}{rgb}{0.14, 0.16, 0.48}
+\definecolor{NB}{rgb}{0.0, 0.0, 0.5}
+\definecolor{midnightblue}{rgb}{0.1, 0.1, 0.44}
+
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor =dr , citecolor=dg, ]{hyperref}
+%\renewcommand\cftsecleader{\color{blue}\cftdotfill{\cftsecdotsep}}
+%\renewcommand\cftsubsecleader{\color{blue}\cftdotfill{\cftsubsecdotsep}}
+\theoremstyle{definition}
+\newtheorem{theorem}{Théorème}[subsection]
+\newtheorem{theo}{Théorème}[section]
+
+\newtheorem{remark}{Remarque}[subsection]
+\newtheorem{rem}{Remarque}[section]
+\newtheorem{prop}{Proposition}[subsection]
+\newtheorem{definition}{Définition}[subsection]
+\newtheorem{lemme}{Lemme}[section]
+\newtheorem{lem}{Lemme}[subsection]
+\newtheorem{defi}{Définition}[section]
+\newtheorem{propo}{Proposition}[section]
+\newtheorem{cor}{Corollaire}[subsection]
+
+\newcommand*\dd{\mathop{}\!\mathrm{d}}
+\newcommand*\R{\mathop{}\!\mathbb{R}}
+\newcommand*\E{\mathop{}\!\mathbb{E}}
+\newcommand*\N{\mathop{}\!\mathbb{N}}
+\newcommand*\F{\mathop{}\!\mathbb{F}}
+\newcommand*\PP{\mathop{}\!\mathbb{P}}
+\newcommand*\U{\mathop{}\!\mathcal{U}}
+\newcommand*\OO{\mathop{}\!\mathcal{O}}
+\DeclareMathOperator*{\argmax}{arg\,max\,}
+\DeclareMathOperator*{\limt}{lim\,}
+\DeclareMathOperator*{\argmin}{arg\,min\,}
+%% Tikz setup
+\usepackage{listofitems} % for \readlist to create arrays
+\usetikzlibrary{arrows.meta} % for arrow size
+\usepackage[outline]{contour} % glow around text
+\contourlength{1.4pt}
+
+\tikzset{>=latex} % for LaTeX arrow head
+\usepackage{xcolor}
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+\tikzstyle{node}=[thick, circle, draw = myblue, minimum size=22, inner sep=0.5, outer sep=0.6]
+\tikzstyle{node in}=[node,line width=0.4mm, green!20!black, draw=mygreen!30!black,fill=mygreen!25]
+\tikzstyle{node hidden}=[node, line width=0.4mm, blue!20!black,draw=myblue!30!black,fill=myblue!20]
+\tikzstyle{node convol}=[node,orange!20!black,draw=myorange!30!black,fill=myorange!20]
+\tikzstyle{node out}=[node, line width=0.4mm, red!20!black,draw=myred!30!black,fill=myred!20]
+\tikzstyle{connect}=[thick, mydarkblue] %,line cap=round
+\tikzstyle{connect arrow}=[-{Latex[length=4,width=3.5]},thick,mydarkblue,shorten <=0.5,shorten >=1]
+\tikzset{ % node styles, numbered for easy mapping with \nstyle
+  node 1/.style={node in},
+  node 2/.style={node hidden},
+  node 3/.style={node out},
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+\usepackage{etoolbox} \AtBeginEnvironment{tikzpicture}{\shorthandoff{;}}
+%%
+
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[R]{\bf\leftmark}
+%\fancyhead[LO]{\rightmark}
+
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\numberwithin{equation}{section}
+\cfoot{\thepage}
+
+\setlength\arrayrulewidth{1.1pt}
+
+\usepackage[Sonny]{fncychap}
+
+\ChNameVar{\Large\sc} \ChNumVar{\Huge} \ChTitleVar{\Huge\bf} \ChRuleWidth{1pt} \ChNameUpperCase
+% Document starts here
+% 
+\newcounter{daggerfootnote}
+\newcommand*{\daggerfootnote}[1]{%
+    \setcounter{daggerfootnote}{\value{footnote}}%
+    \renewcommand*{\thefootnote}{\fnsymbol{footnote}}%
+    \footnote[2]{#1}%
+    \setcounter{footnote}{\value{daggerfootnote}}%
+    \renewcommand*{\thefootnote}{\arabic{footnote}}%
+    }
+    
+
+
+
+\begin{document}
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{center}
+\includegraphics[scale=0.6]{entete.png} \\[1cm]
+\HRule \\[0.4cm]
+{ \huge \bfseries Optimisation des pricing XVA \\[0.15cm] }
+\HRule \\
+\end{center}
+\vspace*{1.7cm}
+\begin{center}
+\large \textsc{Oumayma MAARAF}
+\end{center}
+
+\vspace*{0.3cm}
+\begin{tabular}{ll}
+\large \textbf{Sous l'encadrement de}:& \large Alexis CHAROY\\
+& \large Aurélien ALFONSI
+\end{tabular}
+\\
+\vspace*{11cm}
+\begin{center}
+{\large 2022-2023}
+
+\end{center}
+
+\vfill 
+\end{titlepage}
+
+\newpage
+\chapter*{Résumé}
+Dans ce travail, nous nous sommes intéressés au calcul de l'exposition positive espérée. Pour ce faire, nous avons exploré deux méthodes de calcul de la valeur de référence.  La première est la méthode de déformation de l'échantillon où, comme son nom l'indique, nous déformons un échantillon provenant d'un modèle initial afin de \textit{matcher} les prix des options vanille du marché sur un ensemble spécifique de strikes, ce qui nous permettra de \textit{matcher} également les prix d'autres options européennes. La seconde méthode consiste à utiliser le modèle de colocoting local volatility, dans lequel nous utilisons uniquement la fonction de distribution cumulative du marché et un processus à noyau. Nous avons testé ces deux méthodes sur des options européennes et exotiques en les comparant à un modèle stochastique de volatilité locale calibré sur le marché.
+
+\chapter*{Dédicaces}
+Je dédie ce travail à:
+\vspace*{0.5cm}
+\begin{enumerate}
+\item[•] mes deux chers êtres, qui m'ont entouré d'un amour sans limite et qui ont contribué grandement à l'édification de ma personnalité;
+\\\\
+\item[•] Mon frère et mes deux soeurs, auquels je dois une profonde reconnaissance de m'avoir encourager et prêter main-forte quand ça été nécessaire;
+\\\\
+\item[•] Mes collègues et amis, avec lesquels j'ai formé une équipe soudée, solide et efficace basée sur la confiance que j'aurai garde d'oublier;
+\\\\
+\item[•] Mes professeurs, à qui je dois tout respect et hommage d'avoir contribué à ma solide formation.
+\end{enumerate}
+\newpage
+\chapter*{Remerciements}
+Tout d'abord, je remercier Monsieur Marouan Iben Taarit pour m'avoir donner l'opportunité de réaliser ce stage au sein de l'équipe recherche xVA front office de Natixis.\\\\
+
+Je tiens à remercier vivement Monsieur Alexis Charoy pour sa disponibilité, son partage d'expertise et son accompagnement tout au long du stage.\\\\
+
+
+Mes remerciements vont également à Monsieur Alaeddine Gabsi pour toute l'aide qu'il m'a fourni durant mon stage, ainsi que toute l'équipe recherche xVA front office de Natixis pour leurs gentillesse.\\\\
+
+J'adresse ma gratitude au corps professoral de l'école.\\\\
+
+\newpage
+\begingroup
+\hypersetup{linkcolor=midnightblue}
+
+\tableofcontents
+\endgroup
+\newpage
+\begingroup
+\hypersetup{linkcolor=midnightblue}
+\listoffigures
+\endgroup
+
+\newpage
+
+\begingroup
+\hypersetup{linkcolor=midnightblue}
+ \listoftables
+\endgroup
+ 
+\newpage
+\chapter{Introduction}
+Suite à la crise financière de 2007-2008, les académiques et les praticiens ont réexaminé l'évaluation des produits financiers sous plusieurs aspects. En particulier, la valeur d'un produit doit prendre en compte la possibilité de défaut d'un des agents impliqués dans la transaction. Toutes ces questions sont représentées au niveau des équations d'évaluation par l'introduction d'ajustements de valeur, qui sont des termes supplémentaires à ajouter ou à substituer à un prix de référence idéalisé, calculé en l'absence des frictions susmentionnées, afin d'obtenir la valeur finale de la transaction.\\\\
+Parmi les nouveaux risques apparus, il y a le risque de contrepartie. Les modèles de tarification standard, comme le modèle Black-Scholes, fonctionnent dans un monde sans risque de contrepartie et supposent que la contrepartie ou la banque elle-même ne fera jamais défaut, sous-estimant ainsi les pertes potentielles, ce qui devrait affecter les prix des produits dérivés. D'autres risques, comme le risque de financement, le risque de garantie ou le risque d'écart, sont également devenus plus importants depuis 2008. Chacun d'entre eux nécessite une adaptation spécifique pour être géré. La réglementation financière a rendu ce dernier impératif et a donc modifié la manière dont les banques fixent le prix des produits dérivés.\\\\
+Le nouveau cadre normatif comporte deux étapes. Tout d'abord, le prix des produits dérivés est fixé comme d'habitude en utilisant la probabilité risque neutre et en supposant qu'il n'y a pas de risque de contrepartie. On obtient ainsi ce que l'on appelle la valeur de référence. Pour obtenir la valeur économique totale du produit dérivé, la xVA est ajoutée à la valeur de référence afin de prendre en compte les risques susmentionnés qui ne sont pas pris en compte dans les hypothèses standard. Les xVA les plus courantes (où "x" est une lettre de remplacement) sont les suivantes :
+\vspace*{0.3cm}
+\begin{itemize}
+\item[•] \textbf{CVA}: (credit valuation adjustment) le coût de la couverture contre les pertes sur une position (courte ou longue) sur un dérivé résultant de la défaillance d'une contrepartie 
+\item[•] \textbf{DVA}: (debt valuation adjustment) le coût de la couverture des pertes subies sur une position dérivée en raison de la défaillance de la banque émettrice du dérivé
+\item[•] \textbf{FVA}: (funding valuation adjustment) la somme du FBA (funding benefit adjustment) et du FCA (funding cost adjustment). Le FBA est un avantage associé aux transactions non garanties hors de la monnaie (c'est-à-dire les passifs). Et le FCA est un coût associé aux transactions non garanties dans la monnaie (c'est-à-dire les actifs).
+\item[•] D'autres ajustements sont parfois faits comme le MVA, KVA, collVA ...
+\end{itemize}
+\vspace*{0.3cm}
+Pour l'instant, décrivons une situation générale dans laquelle les xVA sont impliqués.\\\\
+On considère un portefeuille de transactions entre \textbf{Natixis} (position longue) et une contrepartie \textbf{C} collatéralisée. Le payoff de ce portefeuille est $\phi_T$ à la maturité $T$. On note:
+\vspace*{0.3cm}
+\begin{itemize}
+\item[•] Pour tout $t\in [0,T]$, le montant du collatéral est $C_t$. 
+\item[•] Pour tout $t\in [0,T]$, le taux de rémunération du collatéral est $r_t^C$.
+\item[•] Pour tout $t\in [0,T]$, la valeur de référence est $V_t$.
+\item[•] Le temps de défaut de la contrepartie (resp. Natixis) est noté $\tau_C$ (resp. $\tau_N$).
+\item[•] Le taux de recouvrement de la contrepartie (resp. Natixis) est noté $R_C$ (resp. $R_N$). 
+\item[•] Tous les cashflow sont considérés du point de vue de Natixis (c'est-à-dire positifs lorsqu'ils sont reçus et négatifs lorsqu'ils sont payés)
+\end{itemize}
+\vspace*{0.5cm}
+Nous visons à calculer à $t=0$:
+$$\mbox{Full economic value = }V_0+\mbox{CVA}_0$$
+$V_0$ est la valeur de réference de l'opération à la date $t=0$, donnée par la théorie standard et est donc supposée connue. Donc il reste à estimer $CVA_0$ qui par sa définition est égale à:
+\begin{equation*}
+\begin{split}
+\mbox{CVA}_0&=\mbox{Prix}_{t=0}(\mbox{en incluant le risque de contrepartie})-\mbox{Prix}_{t=0}(\mbox{risque free})\\
+&=[\mbox{Prix}_{t=0}(\phi_T+\mbox{Pertes dues au défaut de la contrepartie})]-\mbox{Prix}_{t=0}(\phi_T)\\
+&=\mbox{Prix}_{t=0}(\mbox{Pertes dues au défaut de la contrepartie})
+\end{split}
+\end{equation*}
+Et les pertes dues au défaut de contrepartie sont égales à $-(1-R_C)(V_{\tau_C}-C_{\tau_C})_+\textbf{1}_{\{\tau_C<T\}}$
+Donc sous la probabilité risque neutre $\mathbb{Q}$, on a
+$$\mbox{CVA}_0=\E\left[-e^{-\int_0^{\tau_C}r_s ds}(1-R_C)(V_{\tau_C}-C_{\tau_C})_+\textbf{1}_{\{\tau_C<T\}}\right]$$
+En conditionnant par rapport au temps de défaut $\tau_C$ et en supposant l'indépendance entre le temps de défaut et la valeur de référence, on trouve
+$$\mbox{CVA}_0=-(1-R_C)\int_0^T\underbrace{\E\left[e^{-\int_0^{t}r_s ds}(V_t-C_t)_+\right]}_{\mbox{EPE}_t} d\mathbb{Q}(\tau_C\leq T)$$ 
+On note $\mbox{EPE}_t=\E\left[e^{-\int_0^{t}r_s ds}(V_t-C_t)_+\right]$ l'exposition positive espérée au temps $t$. En pratique la formule précédente est discrétisée en considérant $0=t_{0}<t_{1}<\dots<t_{N}=T$
+$$\mbox{CVA}_0=-(1-R_C)\sum_{k=1}^N\E \left[ e^{-\int_0^{t_k}r_s} \left( V_{t_k}-C_{t_k}\right)_+\right]\mathbb{Q}(t_{k-1}\leq \tau_C\leq t_k)$$
+\section*{Problématique du stage}
+Dans le but d'augmenter la précision du calcul du $\mbox{CVA}_0$, on s'intéresse au calcul de $\mbox{EPE}_{t_k}$ pour tout $k\in \llbracket 0,N\rrbracket$. On peut donc utiliser des techniques de réduction de variance, comme on peut encore s'intéresser au calcul de $V_t=\E^{\mathbb{Q}}\left[ \phi_T |\mathcal{F}_t \right]$. Ce travail est consacré plutôt à la deuxième approche. 
+\chapter{Déformation d'échantillon}
+\label{defsection}
+Soient $T>0$ un horizon, et $\left( \Omega, \mathcal{F}, \mathbb{P} \right)$ un espace probabilisé sur lequel on définie un mouvement brownien standard unidimensionnel $W$. On note $\left( \mathcal{F}_t \right)_{t \in [0, T]}$ l'augmentation habituelle de la filtration canonique de $W$. Tous les processus introduits dans ce travail sont définis sur la base stochastique $\left( \Omega, \mathcal{F}, \left( \mathcal{F}_t \right)_{t \in [0, T]}, \mathbb{P}\right)$.\\\\ 
+On présente dans cette section une méthode élaborée pour que les prix obtenus dans notre contexte soient proches de ceux observé sur le marché. En effet, pour une maturité donnée $T$, on cherche un échantillon d'une variable aléatoire $\bar{S}_T$ avec lequel on obtient des prix des options vanilles (en particulier Call) similaires à ceux de marché. \\
+Et sachant que pour une fonction $x\mapsto f(x)$ de classe $\mathcal{C}^2$,  et $x, F, K$ des réels positifs on a (Formule de \textit{Car-Madan} \cite{CarMadan}):
+\begin{equation*}
+f(x)=f(F) + f'(F)(x-F)+\int_0^{F}f''(K)(K-x)_+dK +\int_F^{\infty} f''(K)(x-K)_+dK
+\end{equation*}
+Donc pour calculer le prix d'une option européenne d'échéance $T$ et de payoff $f(S_T)$, on pose $F = S_0 e^{rT}$ et calcule
+l'espérance de $e^{-rT} f(S_T)$ sous la probabilité risque-neutre:
+\begin{equation}
+\label{car}
+\mbox{Prix} = e^{-rT} f(F) + \int_0^{F}f''(K)P(T,K)dK +\int_F^{\infty} f''(K)C(T,K)dK
+\end{equation}
+où $P(T,K)$ et $C(T,K)$ les prix respectifs d'un Put et d'un Call de strike $K$ et de maturité $T$. Donc si on s'ajuste bien aux prix des options vanilles on s'ajustera aussi aux prix des options européennes (avec l'erreur de discrétisation des deux intégrales).
+
+\label{def}
+\section{Description de la méthode}
+Soit $T$ une maturité. On dispose de la fonction de répartition implicite de marché $F_{S_T}$ d'un sous-jacent $S_{T}$. On modélise dans un premier temps notre sous-jacent par un modèle simple avec des paramètres librement choisis par exemple (Black-Scholes):
+\begin{equation}
+\label{bs}
+\frac{dS_{t}}{S_{t}}=rdt+\sigma dW_{t}
+\end{equation}
+
+On considère alors la procédure suivante:
+\begin{itemize}
+\item[•] On cherche \label{strike} des strikes $0=K_{0}<K_{1}<\dots<K_{n}<K_{n+1}=+\infty$ tels que $\mathbb{Q}(S_{T}\in[K_{i},K_{i+1}[)=\frac{1}{n+1}$ (qui forment une subdivision équidistante de l'espace d'état de la variable $S_T$). On résout donc le système d'équations suivant   
+$$\left\{
+    \begin{array}{ll}
+       F_{S_{T}}(K_{1})-F_{S_{T}}(K_{0}) & =\frac{1}{n+1}\\
+        \vdots & \vdots\\
+       1-F_{S_{T}}(K_{n})  &=\frac{1}{n+1}\\
+    \end{array}
+\right.$$
+
+\item[•] On simule $\left(S_{i,T}\right)_{0\leq i\leq N}$ et on les ordonne en $\left(\tilde{S}_{i,T}\right)_{0\leq i\leq N}$
+
+\item[•] On construit $n$ bucket ($B_{.}$) tels que chaque bucket contient $\left\lfloor \frac{N}{n}\right\rfloor$ simulations ordonnées (on prend $n$ comme diviseur de $N$ pour avoir une division entière).$$\underbrace{\tilde{S}_{0,T}<\dots<\tilde{S}_{\left\lfloor \frac{N}{n}\right\rfloor ,T}}_{B_{0}}<\dots<\underbrace{\tilde{S}_{(n-1)\left\lfloor \frac{N}{n}\right\rfloor ,T}<\dots<\tilde{S_{N,T}}}_{B_{n+1}}$$
+
+avec pour tous $i\in\llbracket0,n+1\rrbracket$, $\#B_{i}=\left\lfloor \frac{N}{n}\right\rfloor :=m$
+
+\end{itemize}
+\vspace*{0.3cm}
+Le but est de passer de l'échantillon (taille N) de $S_{T}$ à un échantillon de même taille de la variable $\bar{S}_{T}$ de manière à obtenir des prix des options vanilles (call) proches de ceux observés au marché. Pour ce faire on suit la procédure suivante:
+\vspace*{0.3cm}
+\begin{itemize}
+\item[•] On construit $\left(\tilde{S}_{i,T}^{*}\right)_{0\leq i\leq N}$ de manière à associer chaque bucket $B_{i}$ à l'intervalle $[K_{i},K_{i+1}]$. En effet, on introduit l'ensemble suivant:
+$$\mathcal{I}_j := \left\{i\in \llbracket 0, N\rrbracket: \quad \tilde{S}_{i, T} \in B_j\right\}$$
+
+On effectue alors pour chaque bucket la transformation suivante sur ces éléments.
+$$\left\{
+    \begin{array}{ll}
+       \tilde{S}_{0,T}^{*} & =K_{i}\\
+       \tilde{S}_{1,T}^{*} & =\tilde{S}_{0,T}^{}+\dfrac{\tilde{S}_{m,T}^{*}-\tilde{S}_{0,T}^{*}}{\tilde{S}_{m, T}-\tilde{S}_{0,T}}(\tilde{S}_{1,T}-\tilde{S}_{0,T})\\
+        \vdots & \vdots\\
+       \tilde{S}_{m,T}^{*} & =K_{i+1}\\
+    \end{array}
+\right.$$
+
+
+Pour le dernier bucket on fait la transformation suivante $\forall j\in\mathcal{I}_{n},\quad\tilde{S}_{t}^{j*}=\max(\tilde{S}_{t}^{j},K_{n})$
+\vspace*{0.1cm}
+\item[•] Pour trouver un échantillon $\left(\bar{S}_{i,T}\right)_{0\leq i\leq N}$, on résout le système d'équation suivant  
+\begin{equation}
+\label{eq1}
+\frac{e^{-rT}}{N}\sum_{l\in  \bigcup_{j=1}^{n}\mathcal{I}_{j}}(\bar{S}_{l,T}-K_{i})_{+}=C(T,K{i})
+\end{equation}
+On prend $K_{n+1}=\max(N C(T,K_{i})+K_{n},\max(\tilde{S}_{T}^{*}))$. Pour ce faire on propose la paramétrisation suivante: si $l\in\mathcal{I}_{i}$ on a, avec $\alpha_i$ un réel à déterminer
+\end{itemize}
+\vspace*{0.3cm}
+\begin{equation}
+\label{param}
+\bar{S}_{l,T}^{*}=\left\{
+    \begin{array}{lll}
+       \alpha_{i}\tilde{S}_{l,T}^{*}+(1-\alpha_{i})K_{i} & \mbox{si}& \frac{e^{-rT}}{N}\displaystyle \left(\sum_{l\in\mathcal{I}_{i}}(\tilde{S}_{l,T}^{}-K_{i})_{+}+\sum_{l\in\bigcup_{j=i+1}^{n}\mathcal{I}_{j}}(\bar{S}_{l,T}^{}-K_{i})_{+}\right)\geq C(T,K_{i})\\
+       \alpha_{i}\tilde{S}_{l,T}^{*}+(1-\alpha_{i})K_{i+1} & \mbox{si} &  \frac{e^{-rT}}{N} \displaystyle \left(\sum_{l\in\mathcal{I}_{i}}(\tilde{S}_{l,T}^{*}-K_{i})_{+}+\sum_{l\in\bigcup_{j=i+1}^{n}\mathcal{I}_{j}}(\bar{S}_{l,T}^{*}-K_{i})_{+}\right)\leq C(T,K_{i})\\
+    \end{array}
+\right.
+\end{equation}
+On peut résoudre \ref{eq1} de manière récursive rétrograde en utilisant la paramétrisation proposée \ref{param}. Pour le bucket $i$ on trouve $\alpha_i$ (en notant $x\in{i,i+1}$):
+\begin{equation*}
+\begin{split}
+\sum_{l\in\bigcup_{j=i}^{n}\mathcal{I}_{j}}(\bar{S}_{l,T}-K_{i}) & = Ne^{rT}C(T,K_{i})\\
+\sum_{l\in\mathcal{I}_{i}}(\bar{S}_{l,T}-K_{i})+\sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}(\bar{S}_{l,T}-K_{i}) & =Ne^{rT}C(T,K_{i})\\
+\sum_{l\in\mathcal{I}_{i}}\bar{S}_{l,T}-K_{i}m(n-i+1)+\sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}\bar{S}_{l,T} & =Ne^{rT}C(T,K_{i})\\
+Ne^{rT}C(T,K_{i})+K_{i}m(n-i+1)-\sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}\bar{S}_{l,T} & = \sum_{l\in\mathcal{I}_{i}}\left(\alpha_{i}\tilde{S}_{l,T}^{*}+(1-\alpha_{i})K_{x}\right)\\
+ Ne^{rT}C(T,K_{i})+K_{i}m(n-i+1)-K_{x}m-\sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}\bar{S}_{l,T} & =\alpha_{i}\sum_{l\in\mathcal{I}_{i}}\left(\tilde{S}_{l,T}^{}-K_{x}\right)    \\
+\end{split}
+\end{equation*}
+Donc 
+$$\alpha_{i} =  \frac{Ne^{rT}C(T,K_{i})+K_{i}m(n-i+1)-K_{x}m-\displaystyle \sum_{k=i+1}^{n}\sum_{l\in\mathcal{I}_{k}}\bar{S}_{l,T}}{\displaystyle \sum_{l\in\mathcal{I}_{i}}\left(\tilde{S}_{l,T}^{}-K_{x}\right)}$$
+
+\section{Applications numériques}
+Dans les deux sous sections suivantes on va appliquer la méthode de déformation dans deux cadres différents pour deux buts différents. Dans le premier on considère que le marché est modélisé par un modèle Black-Scholes (donc on calibre la méthode aux prix des options vanilles sous ce modèle), dans le but de comparer les prix des options européennes obtenues avec l'échantillon déformé avec ceux obtenus de l'échantillon de la simulation exacte. On réalise ces tests pour plusieurs tailles d'échantillon. Dans le deuxième cadre on considère que le marché est modélisé par un modèle SABR, et on compare les prix (pour plusieurs options) donnés par la méthode de déformation avec deux autres modèles calibrés au marché.
+\subsection{Cadre 1}
+On considère dans un premier temps que le marché est modélisé par un modèle Black Scholes de dynamique donnée par \ref{bs} avec $r=0.03$, $\sigma=0.2$ et $s_0 = 1$.\\\\
+On prend donc comme modèle de départ dans la méthode de déformation d'échantillon un modèle Black-Scholes de mêmes paramètres.\\\\
+Le but de cette première application est de comparer les prix donnés par l'échantillon déformé et ceux issus de la simulation exacte (ou en général issus de la discrétisation de l'EDS du prix du sous-jacent) .\\\\
+La figure suivante \ref{callDef} présente le prix d'un call calculé avec un échantillon déformé et un échantillon issu de la simulation exacte de taille $N$. On varie le nombre de simulation et on remarque que le prix donné par la méthode de déformation est quasiment égal avec le prix exact de l'option.
+\begin{center}
+\label{callDef}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/callDef.png}
+\captionof{figure}{Prix d'un Call de maturité T = 1 et strike K = 1.2, pour différents nombre de simulation}
+\end{center}
+On considère maintenant une option spread entre deux sous-jascents $S_t^1$ et $S_t^2$ corrélés avec coefficient de corrélation $\rho = 0.6$ de dynamique \ref{bs} (même paramètres) et de spots respectifs $S^1_0 = S^2_0 = 1.4$. Le payoff de cette option est $(S_T^1 - S_T^2)_+$. On applique la méthode de déformation pour les deux sous-jacents et on compare le prix de l'option spread calculé à partir de ces deux échantillons déformés avec le prix donné par l'échantillon issu de la simulation exacte ainsi qu'avec le prix exact donné par la formule suivante (dans le cas de Black-Scholes):
+\begin{equation*}
+\begin{split}
+v(0, S_t^1, S_t^2) &= S_t^1 \mathcal{N}\left(d_1\left(\frac{S_t^1}{S_t^2}\right)\right) - S_t^2 \mathcal{N}\left(d_2\left(\frac{S_t^1}{S_t^2}\right)\right)\\
+d_1(y) & = \displaystyle \frac{\log(y) + 0.5  \bar \sigma^2 T}{\bar \sigma \sqrt{T}}\\
+d_2(y) &= d_1(y) - \bar \sigma \sqrt{T}
+\end{split}
+\end{equation*}
+avec $\bar \sigma = \sigma \sqrt{2 (1 - \rho)}$. On remarque ici 
+que pour un nombre de simulation assez petit, typiquement $5000$, les prix trouvés avec la méthode de déformation sont assez proches des prix exacts. \\\\
+En ce qui concerne le calcul de l'exposition positive espérée, on a pour un payoff $H_T$ (européen) $EPE_t = e^{-rt}\mathbb{E}\left[ (V_t)_+ \right] = e^{-rt}\mathbb{E}\left[ \left(\mathbb{E}\left( e^{-r(T-t)} H_T | \mathcal{F}_t\right)\right)_+ \right] = e^{-rT} \mathbb{E}\left[ \left(\mathbb{E} \left( H_T | \mathcal{F}_t\right)\right)_+ \right]$. Dans ce travail on étudie que des cas où $V_t$ est positive (contrairement aux produits dérivé des taux tel qu'un swap). La formule précédente se simplifie donc en  $EPE_t = e^{-rT} \mathbb{E}(H_T)=V_0$. Et de ce fait on obtient les même résultats (en ce qui concerne la comparaison des prix de Call, Spread entre la méthode de déformation et la simulation exacte) pour l'exposition positive espérée.  
+\begin{center}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/SpreadDef.png}
+\captionof{figure}{Prix d'une option Spread pour différentes maturités (N = 5000)}
+\end{center}
+\subsection{Cadre 2}
+\label{modelmarket}
+On considère maintenant comme modèle de marché un modèle de SABR \cite{SABR} (\textit{stochastic alpha beta rho model}) à volatilité locale stochastique. Sous ce modèle le forward suit la dynamique suivante
+
+\begin{equation}
+\begin{split}
+dF_{t} & =\sigma_{t}F_{t}^{\beta}dW_{t}\\\
+d\sigma_{t} & =\alpha\sigma_{t}dZ_{t}\\
+\end{split}
+\end{equation}
+
+avec $d\langle W_{.},Z_{.}\rangle=\rho dt$, $0 <\beta\leq1$, $\alpha\geq0$ et $-1\leq\rho\leq1$. On note $f :=f(0,t)=S_{0}e^{rt}$ et $\sigma_{0}$ la volatilité initiale. \\\\Sous ce modèle on a la formule approximée suivante pour la volatilité implicite $$\sigma(T,K)=\frac{\alpha}{f^{^{1-\beta}}}\left(1-\frac{1}{2}\left(1-\beta-\rho\lambda\right)\log\frac{K}{f}+\frac{1}{12}\left(\left(1-\beta\right)^{2}+\left(2-3\rho^{2}\right)\lambda^{2}\right)\log^{2}\frac{K}{f}\right)$$
+
+avec $\lambda=\frac{\nu}{\alpha}f^{1-\beta}$, approximation valable lorsque le strike $K$ est au voisinage de $f$.
+\\\\
+Dans nos tests on utilise les paramètres suivants: $\beta=0.5$, $\alpha=0.2$, $\rho=-0.9$, $\nu=0.2$, $S_{0}=1$, $r=0.03$, et on se donne un set de maturités 
+\begin{equation}
+\label{setMat}
+\tau=\{0.05y,0.25y,0.5y,1y,2y,3y,4y\}
+\end{equation}
+\textbf{Application de la méthode de déformation de l'échantillon}\\
+Soit la maturité $T=4$. On choisit le modèle suivant pour le sous-jacent $S_{t}$ avec $r=0.03$ et $\sigma=0.2$:
+$$ \frac{dS_{t}}{S_{t}}=rdt+\sigma dW_{t}$$
+Après avoir suivi la procédure décrite dans la section précédente, on trouve un échantillon $\bar S_T$ avec lequel on reprice exactement les Calls de maturité $T$ et de strike \ref{strike}.\\\\
+La figure \ref{fig1} représente l'histogramme de l'échantillon déformé contre la densité de marché calculée comme suit:
+$$f_{\hat S_T}(x) = e^{rT}\frac{\partial^2 C(T,K)}{\partial K^2}\bigg|_{K=x}$$ 
+On peut remarquer que la distribution empirique de l'échantillon $\bar{S}_T$ approxime bien la densité de marché. \\\\
+On teste la méthode en calculant les prix des options vanilles (Calls) avec des strikes différents de ceux avec laquelle elle était "calibrée". La figure \ref{fig2} montre la volatilité implicite du marché pour la maturité $T$ et un set de strikes contre la volatilité implicite issue des prix de Call (sur le même set de strikes) calculés à partir de l'échantillon déformé. On remarque un ajustement exact de la volatilité implicte. 
+\begin{center}
+\label{fig1}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/densitydef.png}
+\captionof{figure}{Histogramme de l'échantillon déformé contre la densité de marché}
+\end{center}
+On trace aussi la fonction de répartition du marché contre celle de l'échantillon déformé \ref{fig3}. On effectue un test de Kolmogorov-Smirnov et on accepte au seuil de $5\%$ l'hypothèse nulle (les deux échantillons ont la même distribution) avec une p-value de 0.51. 
+\begin{center}
+\label{fig2}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/defimpvol.png}
+\captionof{figure}{Volatilité implicite du marché contre celle issue des prix calculés à partir de l'échantillon déformé}
+\end{center}
+\begin{center}
+\label{fig3}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/defcdf.png}
+\captionof{figure}{Fonction de répartition de marché et celle empirique de l'échantillon déformé}
+\end{center}
+
+\chapter{Colocating local volatility modèle}
+\label{clvmdl}
+Dans un modèle de volatilité locale non paramétrique standard,
+$$  dS_t= r S_t dt + \sigma(t, S_t)dW_t$$
+on cherche la volatilité locale telle que le processus de prix spot a les mêmes lois marginales que celles du marché. De ce fait, la surface de volatilité implicite calculée dans ce modèle s'ajuste parfaitement à sa celle du marché (de même pour les prix des options vanilles). Toutefois, ce modèle donne souvent des prix catastrophiques lorsqu'il est utilisé pour le pricing des options exotiques , e.g. il \textit{misprice} les options forward-start car il prédit un forward skew constant pour les longues maturités.  
+\\\\
+Le modèle Collocating Local Volatility \cite{CLV} (CLV) fait la construction de la  volatilité locale de manière différente. En fait, le modèle est construit uniquement en utilisant la fonctions de répartition de marché. En plus, dans cette approche on se base sur la recherche des zéros de certaines fonctions à la différence de la discrétisation des dérivées par des schémas de différence finie dans l'équation de Dupire.
+\section{Collocation stochastique}
+Soient $Y$ une variable aléatoire à valeurs réelles et $F_{Y}$ sa fonction de répartition qui est strictement croissante . Soient $U\sim\mathcal{U}([0,1])$ et $(u_{i})_{0\leq i \leq n}$ un échantillon de $U$. Classiquement pour générer un échantillon $(y_i)_{0\leq i \leq n}$ de $Y$ on fait
+
+$$y_{i}=F_{Y}^{-1}(u_{i}),\quad i\in \llbracket 0, n\rrbracket$$
+
+Or dans le cas où l'inverse de la fonction de répartition n'a pas de forme analytique cette procédure devient couteuse, car il faut faire $n$ inversions.
+
+On considère alors une autre variable X, pour laquelle $F_{X}^{-1}(.)$ (donc sa simulation) est moins couteuse que celle de Y. On sait que $F_{Y}(Y)\overset{d}{=}F_{X}(X)$ donc $y_{n}=F_{Y}^{-1}(F_{X}(\xi_{n}))$ où $y_{n}$, $\xi_{n}$ représentent respectivement des échantillons de $Y$, $ X$ . Ici encore la simulation de $Y$ reste couteuse. Il faut donc trouver une relation alternative pour ne pas faire l'inversion $F_{Y}^{-1}$ pour tout l'échantillon de $X$.
+
+On cherche alors une fonction $g$ de sorte que  $g(.)=F_{Y}^{-1}(F_{X}(.))$, donc à ce que $Y\overset{d}{=}g(X)$, et telle que l'évaluation de cette fonction ne soit pas couteuse.\\\\
+Dans la méthode de collocation stochastique \cite{Colloc} on approxime $Y$ par une fonction $g$ de $X$ par interpolation de Lagrange:$$y_{n}\approx g_{N}(\xi_{n})=\sum_{i=1}^{N}y_{i}l_{i}(\xi_{n}),\quad l_{i}(\xi_{n})=\prod_{j=1,i\neq j}^{N}\frac{\xi_{n}-x_{j}}{x_{i}-x_{j}}$$
+
+où $(\xi_{n})$ est un échantillon de $ X$ et $x_{i}$, $x_{j}$ (cf. section suivante) sont des points de collocation ($N$ est généralement inférieur à 8), et $y_{i}=F_{Y}^{-1}(F_{X}(x_{i}))$, $l(x)=(l_{1}(x),\dots,l_{N}(x))^{T}$est la base de Lagrange telle que $l_{i}(x_{j})=\delta_{ij}$. Donc une fois les N points  de collocation  $x_{i}$ déterminés et les N inversions $F_{Y}^{-1}$ faites, on peut simuler n'importe quel nombre d'échantillon de la variable $Y$ et ceci par l'évaluation du polynôme $g_{N}(.)$. On parle ici de \textit{Stochastic Collocation Monte Carlo sampler} (SCMC sampler).
+\subsection{Points de collocation} 
+\begin{theorem}
+\cite{Th1} Pour toute densité $f_{X}$, il existe une unique suite de polynômes $p_{i}(x)$ orthogonaux à $f_X$ avec comme degré $deg(p_{i}(x))=i$, cette suite se construit par
+
+$$p_{i+1}(x)=(x-\alpha_{i})p_{i}(x)-\beta_{i}p_{i-1}(x),\quad i\in\llbracket0,N-1\rrbracket$$
+
+où $p_{-1}(x)=0$ et $p_{0}(x)=1$ et pour tous $i\in\llbracket0,N-1\rrbracket$ $\alpha_{i}=\frac{\mathbb{E}(Xp_{i}^{2}(X))}{\mathbb{E}(p_{i}^{2}(X))}$ et $\beta_{i}=\frac{\mathbb{E}(p_{i}^{2}(X))}{\mathbb{E}(p_{i-1}^{2}(X))}$ et $\beta_{0}=0$.
+\end{theorem}
+\vspace*{0.3cm}
+On construit la matrice de Gram $M=\left({\mu_{ij}}\right)_{i,j=0}^{N}$ en considérant le monôme $m_{i}(X)=X^{i}$ par $\mu_{ij}=\mathbb{E}(m_{i}(X)m_{j}(X))=\mathbb{E}(X^{i+j})$. La matrice $M $ est définie positive elle s'écrit alors comme $M=R^{T}R$ où $R=\left({r_{ij}}\right)_{i,j=0}^{N}$ est une matrice triangulaire inférieure. On a
+$$\alpha_{j}=\frac{r_{j,j+1}}{r_{j,j}}-\frac{r_{j-1,j}}{r_{j-1,j-1}},\quad\beta_{j}=\left(\frac{r_{j+1,j+1}}{r_{j,j}}\right)^{2},\quad j=1,\dots,N-1$$
+
+où $r_{0,0}=1$ et $r_{0,1}=0$
+\begin{theorem}
+\label{th1}
+Les zéros du polynôme orthogonal $p_{N}(X)$, notés  $x_{i}$ $i\in\llbracket1,N\rrbracket$, sont les valeurs propres de la matrice symétrique suivante
+$$\hat{J}:=
+\begin{pmatrix}
+\alpha_{1} & \sqrt{\beta_{1}} & 0 & 0 & 0\\
+\sqrt{\beta_{1}} & \alpha_{2} & \sqrt{\beta_{2}} & 0 & 0\\
+ & \ddots  &\ddots &\ddots &\\
+ 0 & 0 & \sqrt{\beta_{N-2}} & \alpha_{N-1} & \sqrt{\beta_{N-1}}\\
+ 0 & 0 & 0 & \sqrt{\beta_{N-1}} & \alpha_{N} 
+\end{pmatrix}$$
+\end{theorem}
+Ces zéros seront pris comme points de collocation.\\
+\vspace*{0.3cm}
+Les points de collocation pour une variable $X\sim\mathcal{N}(0,1)$ (Gauss-Hermite modifié) qu'on utilisera dans les parties suivantes sont donnés par 
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$x_{i}$ &  $N=4$\\
+\hline
+$x_{1}$ &  -2.3344 \\
+\hline
+$x_{2}$ &  -0.7420 \\
+\hline
+$x_{3}$ &  0.7420 \\
+\hline
+$x_{4}$ &2.3344 \\
+\hline
+\end{tabular}
+\captionof{table}{Points de collocation ($N=4$) pour la variable $X\sim \mathcal{N}(0, 1)$}
+\end{center}
+\subsubsection{Monotonie de la fonction $g$}
+Une fois les points de collocation $x_{i}$ déterminés et les inversions correspondantes faites $y_{i}=F_{Y}^{-1}(F_{X}(x_{i}))$ on doit construire une fonction d'approximation $g_{N}(.)$ qui est \textit{idéalement} monotone différentiable et qui vérifie $y_{i}=g_{N}(x_{i})$. En effet en choisissant $g_{N}$ comme un polynôme de Lagrange on ne garantit pas la monotonie. Néanmoins la convergence du \textit{SCMC sampler} ne dépend pas de la monotonie de $g_{N}$.
+\subsection{Analyse de l'erreur}
+On s'intéresse dans cette section à l'erreur générée par \textit{Stochastic Collocation Monte Carlo sampler}.
+\\\\
+On se met dans un premier temps dans un cas où la méthode de collocation donne des résultats exacts. Soient $Y\sim\mathcal{N}(\mu_{Y},\sigma_{Y}^{2})$ et $X\sim\mathcal{N}(\mu_{X},\sigma_{X}^{2})$ deux variables aléatoires normales. On a  $g_{N}(X)\overset{d}{=}Y$ pour $N=2$. En effet, soient $x_{1}$ et $x_{2}$ deux points de collocation, alors $g_{2}(X)=y_{1}\frac{X-x_{2}}{x_{1}-x_{2}}+y_{2}\frac{X-x_{1}}{x_{2}-x_{1}}$.
+\\
+
+On a $$F_{\mathcal{N}(0,1)}\left(\frac{y_{i}-\mu_{Y}}{\sigma_{Y}}\right)=F_{\mathcal{N}(0,1)}\left(\frac{x_{i}-\mu_{X}}{\sigma_{X}}\right)$$
+et donc $y_{i}=\frac{x_{i}-\mu_{X}}{\sigma_{X}}\sigma_{Y}+\mu_{Y}$. On a alors $\mathbb{E}\left(g_{2}(X)\right)=\mu_{Y}$ et $\mathbb{V}\left(g_{2}(X)\right)=\sigma_{Y}^{2}$ et comme $g_{2}(X)$ suit une loi normale, on a $Y\overset{d}{=}g_{2}(X)$.
+\\
+
+Dans un cas général, pour mesurer l'erreur on peut soit considérer la différence entre $g(X)$ et $g_{N}(X)$ soit l'erreur associée à l'approximation de la fonction de répartition.
+\\\\
+La première erreur est liée à l'interpolation de Lagrange, en effet la relation entre Y et X est $Y\underset{d}{=}g(X)$ qu'on approxime par un polynôme de Lagrange $Y\approx g_{N}(X)$ pour $N$ points de collocation. Cette erreur est donc bien connue
+
+$$e_{X}(\xi_{n})=|g(\xi_{n})-g_{N}(\xi_{n})|=\bigg|\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}(\xi_{n}-x_{i})\bigg|$$
+
+avec $x_{i}$ est un point de collocation, $\hat{\xi}\in[\min(x),\max(x)]$ et $x=(x_{1},\dots,x_{N})^{T}$, on peut borner cette erreur en prenant $\hat{\xi}$ comme l'abscisse du maximum de $\bigg|\frac{d^{N}g(x)}{dx^{N}}\bigg|$. En utilisant $\xi_{n}=F_{X}^{-1}(u_{n})$, on trouve
+
+$$e_{U}(u_{n})=\bigg|g\left(F_{X}^{-1}(u_{n})\right)-g_{N}\left(F_{X}^{-1}(u_{n})\right)\bigg|=\bigg|\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}\left(F_{X}^{-1}(u_{n})-x_{i}\right)\bigg|.$$
+
+\textbf{Erreur de convergence en} $L^{2}$
+\\\\
+On a $Y=g(X)\approx Y_{N}\equiv g_{N}(X)$, où $g(x)=F_{Y}^{-1}(F_{X}(x))$ donc
+
+$$\mathbb{E}\left[(Y-Y_{N})^{2}\right]=\mathbb{E}\left[(g(X)-g_{N}(X))^{2}\right]=\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx$$
+
+Les points de collocations $x_{i}$ et les poids $w_{i}$ sont déterminés par le théorème \ref{th1}. Comme $g(x_{i})=g_{N}(x_{i})$, pour $i\in\llbracket1,N\rrbracket$ l'erreur est:
+
+$$\int_{\mathbb{R}}(g(x)-g_{N}(x))^{2}f_{X}(x)dx=\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}=\varepsilon_{N}$$
+
+Donc l'erreur dans $L^{2}$ est déterminée par l'erreur de quadrature.
+\\\\
+Pour une variable $X\sim\mathcal{N}(0,1)$ il existe une relation entre les paires de $\left({x_{i},w_{i}}\right)_{i=1}^{N}$ et ceux donnés par la quadrature de Gauss-Hermite. En effet, la quadrature de Gauss-Hermite est basée sur la fonction de poids $x\mapsto e^{-x^{2}}$, pour une fonction $x\mapsto\Psi(x)$ on approxime les intégrales de la forme $\displaystyle \int_{-\infty}^{+\infty}e^{-x^{2}}\Psi(x)dx$.
+\\
+D'autre part on a $$\mathbb{E}(\Psi(X))=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}\Psi(x)dx=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{\pi}}e^{-x^{2}}\Psi(\sqrt{2}x)dx$$
+
+donc la relation entre les points et les poids des deux méthodes est $x_{i}^{H}=\frac{x_{i}}{\sqrt{2}}$ et $w_{i}^{H}=w_{i}\sqrt{\pi}$. L'erreur de la quadrature de Gauss-Hermite et donc de la collocation est $$\varepsilon_{N}=\frac{N!\sqrt{\pi}}{2^{N}}\frac{\Psi^{(2N)}(\hat{\xi})}{(2N)!},\quad\Psi(x)=(g(x)-g_{N}(x))^{2}=\left(\frac{1}{N!}\frac{d^{N}g(x)}{dx^{N}}\bigg|_{x=\hat{\xi}}\prod_{i=1}^{N}(x-x_{i})\right)^{2}$$
+
+Pour une fonction $x\mapsto\Psi(x)$ assez régulière l'erreur $\varepsilon_{N}$ converge vers 0 quand $N\to\infty$.
+\\\\
+\textbf{Erreur de convergence pour les queues de distribution}
+\\\\
+Ici on considère la différence entre Y et son approximation $Y_{N}$ sachant que $Y> y^*$. Pour tout $i\in\llbracket1,N\rrbracket$ on a $g_{N}(x_{i})=g(x_{i})=y_{i}$ et on fixe $y^{*}$ et $x^{*}=F_{X}^{-1}(F_{Y}(y^{*}))$. Alors dans $L^{2}$, on a:
+
+\begin{equation*}
+\begin{split}
+\mathbb{E}\left[(Y-Y_{N})^{2}|Y>y^{*}\right] & \leq \mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]\\
+ & =\frac{1}{\mathbb{P}(X>x^{*})}\int_{-\infty}^{+\infty}(g(x)-g_{N}(x))^{2}1_{X>x}(x)f_{X}(x)dx
+\end{split}
+\end{equation*}
+
+En utilisant la quadrature
+\begin{equation*}
+\begin{split}
+\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]& \leq\frac{1}{\mathbb{P}(X>x^{*})}\int_{-\infty}^{+\infty}(g(x)-g_{N}(x))^{2}f_{X}(x)dx\\
+&=\frac{1}{\mathbb{P}(X>x^{*})}\left(\sum_{i=1}^{N}(g(x_{i})-g_{N}(x_{i}))^{2}w_{i}+\varepsilon_{N}\right)
+\end{split}
+\end{equation*}
+Les deux fonctions $g$ et $g_{N}$ sont égales sur les points de collocation, donc la borne supérieure est donnée par
+
+$$\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{}\right]\leq\frac{1}{\mathbb{P}(X>x^{})}\frac{N!\sqrt{\pi}}{2^{N}}\frac{\Psi^{(2N)}(\hat{\xi})}{(2N)!}$$
+
+On peut montrer que pour $x^{*}>0$ $$\mathbb{P}(X>x^{})\geq\frac{1}{\sqrt{2\pi}}e^{-x_{}^{2}/2}\left(\frac{1}{x^{}}-\frac{1}{x_{*}^{3}}\right)$$
+
+et pour $x^{*}>1$
+
+$$\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{}\right]\leq\pi\sqrt{2}e^{-x_{}^{2}/2}\frac{x_{}^{3}}{x_{}^{2}-1}\frac{N!}{2^{N}(2N)!}\Psi^{(2N)}(\hat{\xi})$$
+
+Donc on a $\lim_{N\to\infty}\mathbb{E}\left[(g(X)-g_{N}(X))^{2}|X>x^{*}\right]=0$.
+\\\\
+En utilisant l'inégalité de Chebychev on trouve
+
+$$\mathbb{P}((Y-Y_{N})^{2}\geq a)\leq\frac{1}{a}\mathbb{E}((Y-Y_{N})^{2})=\frac{\varepsilon_{N}}{a}\to0$$
+\section{Collocating local volatility model}
+\label{colloc}
+On considère un sous jacent $S_t$ et un processus (kernel process) $X_t$ dont on dispose des moments $\mathbb{E}(X^{i}_t)$, $i\in\mathbb{N}$. La relation entre $S_t$ et $X_t$ est donnée par
+
+$$S_t\overset{d}{=}g(t,X_t)$$
+
+où $(t,x)\mapsto g(t,x)$ est une fonction mesurable. Le but de cette méthode est de construire la fonction $g$ de manière à ce que les volatilités implicites générées par notre modèle soit égales à celles du marché sur un set de maturités.
+
+Le modèle est donné sous la probabilité risque neutre par
+
+\begin{equation}
+\label{clveq}
+\begin{split}
+ S_t&=g(t,X(t)),\\
+ dX_t&=\mu(X_t)dt+\sigma(X_t)dW_t,\quad X_{t_{0}}=S_{t_{0}} 
+ \end{split}
+ \end{equation}
+
+Soient $T_{i}$, $i=1,\dots,M$ les maturités observées dans le marché. La fonction de répartition du \textit{marché} pour une maturité $T_{i}$ est donnée par $$F_{\hat{S}_{T_{i}}}(x)=1+e^{rT_{i}}\frac{\partial C(t_{0},T_{i},K)}{\partial K}\bigg|_{K=x},$$ où $C(t_{0},T_{i},K)=e^{-rT_{i}}\displaystyle \int_{K}^{\infty}(x-K)f_{\hat{S}(T_{i})}(x)dx$ est le prix d'une option call de maturité $T_{i}$ et de strike $K$. En utilisant la méthode de collocation décrite dans la section précédente, on construit la fonction $g$ pour notre set de maturité ainsi que le set des points de collocation du processus $X_t$ on a donc l'équation suivante avec $x_{ij}:=x_{j}(T_{i})$:$$F_{X_{T_{i}}}(x_{ij})=F_{\hat{S}_{T_{i}}}(g(T_{i},x_{ij}))=:F_{\hat{S}_{T_{i}}}(s_{ij}),\quad i\in\llbracket1,N\rrbracket,\quad j\in\llbracket1,M\rrbracket$$
+
+les valeurs de collocation sont $$g(T_{i},x_{ij}):=s_{ij}=F_{\hat{S}_{T_{i}}}^{-1}(F_{X_{T_{i}}}(x_{ij}))$$. 
+
+Une fois qu'on a la grille $(T_{i},x_{ij},s_{ij})$ on passe à l'étape suivante de la calibration en imposant la continuité de $g$ pour pouvoir simuler $(S_t)$ pour des maturités autres que celles du marché ($t\in]T_{i},T_{i+1}[$). Il faut donc dans un premier temps déterminer les points de collocation $(x_{j}(t))$, $j\in\llbracket1,N\rrbracket$, $t\in]T_{i},T_{i+1}[$, cette procédure est décrite dans la section suivante. Pour déterminer les valeur de collocation $s_{j}(t)$ on fait l'interpolation linéaire suivante:
+\begin{equation}
+\label{eqInterp}
+\forall t\in[T_{i},T_{i+1}[,\quad s_{j}(t)=s_{ij}+(s_{i+1j}-s_{ij})\frac{t-T_{i}}{T_{i+1}-T_{i}},\forall j\in\llbracket1,N\rrbracket
+\end{equation}
+
+Une fois que les points de collocation $x_{j}(t)$ et les valeurs de collocations $s_{j}(t)$ sont déterminés, il faut déterminer une fonction continue $g$ telle que $g(t,x_{j}(t))=s_{j}(t)$. On utilise alors l'interpolation de Lagrange:
+
+\begin{equation}
+\label{inter}
+g(t,X_t)=\sum_{j=1}^{N}s_{j}(t)l_{j}(X_t),\quad l_{j}(X_t)=\prod_{k=1,j\neq k}^{N}\frac{X_t-x_{j}(t)}{x_{k}(t)-x_{j}(t)}
+\end{equation}
+
+\subsection{Processus kernel}
+\label{seckernel}
+Le processus $X_t$ est librement choisi à condition de posséder des moments. On peut considérer comme processus kernel un brownien, un processus qui suit la dynamique d'Heston ou un processus Ornstein Uhlenbeck.
+\\\\
+\textbf{Points de collocation pour une variable normale}: Soient $X_{1}\sim\mathcal{N}(a_{1},b_{1})$ et $X_{2}\sim\mathcal{N}(a_{2},b_{2})$ et leurs points de collocation respectifs $\left(x_{i}^{X_{1}} \right)_i$ et $\left( x_{i}^{X_{2}} \right)_i$. Alors $F_{X_{1}}(x_{i}^{X_{1}})=F_{X_{2}}(x_{i}^{X_{2}})$ pour tous $i\in\llbracket1,N\rrbracket$ et $x_{i}^{X_{1}}=a_{1}+b_{1}x_{i}^{\mathcal{N}(0,1)}$ et $x_{i}^{X_{2}}=a_{2}+b_{2}x_{i}^{\mathcal{N}(0,1)}$, où $x_{i}^{\mathcal{N}(0,1)}$ sont les points de collocation d'une variable normale standard.
+\\\\
+En utilisant le résultat précédent, on obtient les points de collocation du processus $X_t$ par:
+
+\begin{equation}
+\label{eq5}
+x_{i}(t)=\mathbb{E}(X_t)+\sqrt{\mathbb{V}(X_t)}x_{i}^{\mathcal{N}(0,1)},\quad i\in\llbracket1,N\rrbracket
+\end{equation}
+\\
+Pour trouver les $x_{i}^{\mathcal{N}(0,1)}$ on utilise les abscisses de Gauss-Hermite $x_{i}^{H}$, en effet, on a la relation suivante $x_{i}^{\mathcal{N}(0,1)}=\sqrt{2}x_{i}^{H}$.
+\\\\
+La question qui se pose est comment choisir les paramètres du processus $X_t$. Considérons $X_t^{1}=X_0^{1}+a_{1}t+b_{1}W_t$ et $X_t^{2}=X_0^{2}+a_{2}t+b_{2}W_t$ (définis avec le même mouvement brownien) alors on a $X_t^{2}=c_{1}+c_{2}X_t^{1}$ donc d'après le résultat précédent $F_{X_t^{1}}(x_{i}^{X_t^{1}})=F_{X_t^{2}}(x_{i}^{X_t^{2}})$ et comme la fonction $g$ est complètement déterminée par les fonctions de répartitions alors $g(X_t^{1})\overset{d}{=}g(X_t^{2})$. Donc dans ce cas le choix des paramètres du processus $X_t$ n'impactent pas les résultats de la méthode de collocation.
+ \\\\Par contre si on considère comme processus kernel un Ornstein-Uhlenbeck (OU) de dynamique 
+ \begin{equation}
+ \label{eqOU}
+ dX_t=\lambda(\theta-X_t)dt+\eta dW_t
+ \end{equation}
+ 
+de solution:
+
+$$X_t=X_{0}e^{-\lambda t}+\theta(1-e^{-\lambda t})+\eta \int_0^t e^{-\lambda (t-s)}dW_s
+$$
+Donc si on prend deux processus OU avec $\lambda_{1}\neq\lambda_{2}$ on aura des trajectoires $g(X^{1}_t)\neq g(X^{2}_t)$. Cette propriété sera utilisée pour pouvoir s'ajuster aux volatilité forward sans détériorer l'ajustement aux volatilités implicites du marché. 
+\subsection{Paniers en grande dimension}
+Dans le cas d'un panier de dimension supérieure à 1, on travaille de manière similaire au cas unidimensionnel. Le modèle CLV se définit alors pour $M$ sous-jacents
+\begin{equation*}
+\begin{split}
+S_t^k&= g_k(t, X_t^k),\\
+\mbox{d}X_t^k&=\mu_k(X_t^k)\mbox{d}t+\sigma_k(X_t^k)\mbox{d}W_t^k,\quad X_{t_0}^k = S_{t_0}^k,\\
+\mbox{d}\langle W^k, W^l\rangle_t&=\rho_{k,l}\mbox{d}t,\quad k,l\in \{1,\dots,M \}
+\end{split}
+\end{equation*}
+La dynamique précédente montre que chaque sous jacent est modélisé comme dans le cas 1 dimensionnel et que la corrélation entre les sous-jacents est imposée par la corrélation entre les processus kernels.
+\section{Applications numériques}
+On se met dans le même cadre décrit dans \ref{modelmarket} (On suppose que le marché est modélisé par un modèle SABR). On récupère dans un premier temps la fonction de répartition du marché (figure \ref{fctrep}) pour le set de maturité $\tau$ \ref{setMat} et un set de strike. \\\\
+On considère comme processus kernel un processus O.U. de dynamique donnée par \ref{eqOU}, avec les paramètres suivants: $\lambda = 1.2$, $\theta = 0.1$, $\sigma=0.25$.\\\\ 
+Les points de collocation donnés par la formule \ref{eq5} sont présentés dans le tableau suivant
+\vspace*{0.2cm}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+ & $T=0.05$ & $T=0.25$ & $T=0.5$ & $T=1$ & $T=2$ & $T=3$ & $T=4$\\
+\hline
+j & $x_{1,j}$ & $x_{2,j}$ & $x_{3,j}$ &$x_{4,j}$ & $x_{5,j}$&$x_{6,j}$ & $x_{7,j}$\\
+\hline
+1 & 0.8209 &  0.5136 &  0.2790 & 0.0118 &-0.1935&
+        -0.2519 & -0.2692\\
+\hline
+2& 0.9073&  0.6863&  0.4938&  0.2569& 0.0624& 0.0049 &-0.0123\\
+\hline
+3 & 0.9878&  0.8471&  0.6940&  0.4852&  0.3008&
+         0.2442 & 0.2271\\
+\hline
+4& 1.0742&  1.0197&  0.9088&  0.7302&  0.5568& 0.5011& 0.4841\\
+\hline
+\end{tabular}
+\captionof{table}{Points de collocation pour le processus $X(t)$}
+\end{center}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.6]{C:/Users/PC/Desktop/CLV/fctrep.pdf}
+\captionof{figure}{Fonction de répartition du marché}
+\label{fctrep}
+\end{figure} 
+Le tableau \ref{tab1} présente les valeurs de collocations $s_{i,j}$ pour $i\in \llbracket1,M\rrbracket$ et $j\in\llbracket1,N\rrbracket $. A partir des équations \ref{eqInterp} et \ref{eq5} on trouve les paires $\left( x_j(t), s_j(t) \right)_{j=1}^N$ qu'on utilisera dans l'interpolation \ref{inter}, on obtient ainsi la fonction $g(t,x)$ pour $t\in [0,\infty)$ et $x \in \mathbb{R}$.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+
+\hline
+ & $T=0.05$ & $T=0.25$ & $T=0.5$ & $T=1$ & $T=2$ & $T=3$ & $T=4$\\
+\hline
+j & $s_{1,j}$ & $s_{2,j}$ & $s_{3,j}$ &$s_{4,j}$ & $s_{5,j}$&$s_{6,j}$ & $s_{7,j}$\\
+\hline
+1 & 0.8957 & 0.7650& 0.6668& 0.5311& 0.2734& 0.1746&
+  0.0822\\
+  \hline
+2 & 0.9683 & 0.9339& 0.9111 & 0.8831 & 0.8517 & 0.8338 &
+  0.82270524\\
+\hline
+3 & 1.0350 & 1.0829 & 1.1226 &  1.1847 & 1.2852 & 1.3736 &
+  1.4565 \\
+  \hline
+4 & 1.1026 & 1.2323 & 1.3283 & 1.4647 & 1.6604 & 1.8146 &  1.9564 \\
+\hline
+\end{tabular}
+\captionof{table}{Valeurs de collocation}
+
+\label{tab1}
+\end{center}
+La figure \ref{volimpclv} présente les volatilités implicites du marché contre celles issues des prix calculés par le modèle CLV. On conclut qu'il s'agit d'un bon ajustement pour les grandes maturités, néanmoins pour les petites maturités les résultats ne sont satisfaisants qu'au voisinage du point ATM.
+\begin{center}
+\label{volimpclv}
+\includegraphics[scale=0.58]{C:/Users/PC/Desktop/CLV/all.png}
+\captionof{figure}{Volatilité implicite du marché contre celle du modèle CLV pour différentes maturités}
+\end{center}
+
+\chapter{Résultats numériques}
+On présente dans cette section les différents résultats obtenus. En effet, on compare pour plusieurs options les prix donnés par la méthode de déformation d'échantillon \ref{defsection}, le modèle collocating local volatility (CLV) \ref{clvmdl} ainsi qu'un modèle à volatilité locale stochastique qu'on a calibré au marché \ref{slv}.
+\section{Modèle à volatilité locale stochastique}
+\label{slv}
+On considère le modèle à volatilité locale stochastique (SLV) suivant avec lequel on va comparer les deux méthodes précédentes: 
+\begin{equation}
+\label{lev}
+\begin{split}
+\frac{\mbox{d}S_t}{S_t} &= r dt+a_tl(t,S_t)dW_t\\
+a_t & =\sigma_0e^{Y_t}, \quad \mbox{où}\quad \mbox{d}Y_t=-\kappa Y_t dt+\gamma dZ_t\\
+d\langle W, Z\rangle_t & =\rho dt\\
+\end{split}
+\end{equation}
+Afin de calibrer ce modèle au marché il faut trouver une fonction \textit{leverage} $l(t,S)$ qui permet au modèle de s'ajuster aux prix de marché des options vanilles.\\\\ On décrit dans la suite la procédure de simulation Monte Carlo pour ce modèle. Soit $T$ une maturité, on discrétise l'intervalle $(0,T)$ en sous-intervalle $(t_{i-1}, t_i)$, $1 \leq i \leq n$, et on note $\Delta t_i=t_i-t_{i-1}$.\\
+L'EDS que vérifie le processus $Y$ a pour solution dans l'intervalle $(t_{i-1}, t_i)$
+\begin{equation}
+Y_{t_i}=e^{-\kappa \Delta t_i}Y_{t_{i-1}}+\displaystyle \int_{t_{i-1}}^{t_i}\gamma e^{-\kappa (t_i -s)}dZ_s
+\end{equation} 
+Donc étant donné $Y_{t_{i-1}}$, $Y_{t_i}$ est une variable gaussienne (les trajectoires peuvent être simulées \textit{exactement}): 
+$$\E[Y_{t_i}|Y_{t_{i-1}}]=e^{-\kappa \Delta t_i}Y_{t_{i-1}}, \quad \mathbb{V} [Y_{t_i}|Y_{t_{i-1}}]=\frac{\gamma^2}{2\kappa}\displaystyle \left( 1 - e^{-2\kappa \Delta t_i} \right)$$
+Pour le processus $S_t$ on utilise un schéma d'Euler
+\begin{equation}
+\log S_{t_i} - \log S_{t_{i-1}}= \left(r - \frac{1}{2} \sigma_0^2 e^{2Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}})^2\right)\Delta t_i+ \sigma_0 e^{Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}}) \int_{t_{i-1}}^{t_i} dW_t
+\end{equation}
+Donc étant donné $S_{t_{i-1}}$ et $Y_{t_{i-1}}$, $\left( \log S_{t_i}, Y_{t_i}\right)$ est un vecteur gaussien, avec
+\begin{equation}
+\label{2}
+\begin{split}
+\mathbb{E}\left[\left.\log S_{t_i}\right\vert S_{t_{i-1}},Y_{t_{i-1}}\right]&=\log S_{t_{i-1}}-\frac{1}{2}\sigma_0^2e^{2Y_{t_{i-1}}}\Delta t_i\\
+\mathbb{V}\left[\left.\log S_{t_i}\right\vert S_{i_{i-1}}, Y_{t_{i-1}}\right]&=\sigma_0^2e^{2Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}})^2\Delta t_i\\
+\text{Cov}\left[\left.Y_{t_i},\log S_{t_i}\right\vert S_{t_{i-1}}, Y_{t_{i-1}}\right]&=\sigma_0 e^{Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}})\frac{\gamma\rho}{\kappa}\left(1-e^{-\kappa\Delta t_i}\right)\\
+\text{Corr}\left[\left.Y_{t_i},\log S_{t_i}\right\vert S_{t_{i-1}}, Y_{t_{i-1}}\right]&=\rho\sqrt{\frac{2(1-e^{-\kappa\Delta t_i})}{\kappa\Delta t_i(1+e^{-\kappa\Delta t_i})}}:= \bar \rho
+\end{split}
+\end{equation}
+Pour un intervalle de temps $[t_{i-1},t_i]$ en utilisant les équations précédentes, la discrétisation finale est donnée par
+
+\begin{equation*}
+\begin{split}
+\log S_{t_i} &= \log S_{t_{i-1}}-\frac{1}{2}\sigma_0^2e^{2Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}})^2\Delta t_i+\sigma_0e^{Y_{t_{i-1}}}l(t_{i-1},S_{t_{i-1}})\sqrt{\Delta t_i}\left(\sqrt{1-\bar{\rho}^2}Z^1_{i}+\bar{\rho}Z^2_i\right)\\
+Y_{t_i} &= e^{-\kappa\Delta t_i}Y_{t_{i-1}}+\gamma\sqrt{\frac{1-e^{-2\kappa\Delta t_i}}{2\kappa}}Z^2_i\\
+\end{split}
+\end{equation*}
+Où $Z_1$ et $Z_2$ sont des gaussiennes.
+\subsection{Calibration du modèle à volatilité locale stochastique au marché}
+Il est bien connu, dans la littérature des modèles SLV, qu'une fonction \textit{leverage} pour laquelle le modèle \ref{lev}, peut être parfaitement calibré au smile du marché, doit satisfaire à l'équation suivante:
+\begin{equation}
+\label{dup}
+\forall (t, s) \in [0,T]\times \mathbb{R}:\quad l(t,s)^2 \mathbb{E} \left( a_t^2 | S_t = s \right) = \sigma_{Dup}(t,s)^2
+\end{equation}
+Où $\sigma_{Dup}$ est la volatilité locale de Dupire.\\\\ L'exigence minimale pour calibrer la fonction \textit{leverage} $l$ sur le smile du marché est l'approximation numérique de l'espérance conditionnelle en \ref{dup}. Il existe en général trois méthodes dans la littérature afin d'effectuer cette calibration (PDE method, Markovian projection method, Particles calibration method). On utilise ici la troisième méthode introduite par \cite{Guyon}. On va donc la présenter brièvement.\\\\
+\textbf{Méthode de calibration par particules}: Inspirés par la régression de Nadaraya-Watson, les auteurs \cite{Guyon} ont proposé d'approximer l'espérance conditionnelle de \ref{lev} comme suit: Pour le temps $t_k$, $0\leq k \leq M$, où $M$ le nombre de pas de discrétisation du schéma d'Euler de \ref{lev}, pour $N$ échantillon $\left( S_{t_k,j}^N, a_{t_k,j}^N \right)_{1\leq j \leq N}$ de $\left( S_t, a_t\right)$, on approxime l'espérance conditionnelle par:
+\begin{equation}
+\displaystyle \frac{\displaystyle \sum_{j=1}^{N} |a_{t_k,j}^N|^2 \delta_{t_k, N} \left(  S_{t_k,j}^N - s \right)}{\displaystyle \sum_{j=1}^{N} \delta_{t_k, N} \left(  S_{t_k,j}^N - s \right)}
+\end{equation}
+Où $\delta_{t,N}$ est le kernel de régularisation, défini par $x \mapsto \delta_{t,N}(x):= \frac{1}{h_{t,N}}K\left( \frac{x}{h_{t,N}} \right)$, tel que $K$ est un kernel fixé qui est symétrique avec une bande passante $h_{t,N}$ qui tend vers zéro quand $N$ tend vers l'infini. On choisi le kernel proposé par les auteurs \cite{Guyon} $x\mapsto \frac{15}{16}(1-x^2)^2 \textbf{1}_{|x|\leq 1}$ et on prend la bande passante suivante
+$$h_{t,N}=\kappa S_0 \hat{a}_t \sqrt{\max(t,t^*)}N^{-\frac{1}{5}}$$
+où $\hat{a}_t$ est la volatilité implicite ATMF de la maturité $t$, $\kappa=1.5$ et $t^* = \frac{1}{4}$. 
+\\\\
+la figure \ref{figmdl} présente les volatilités implicites du marché contre celles issues des prix calculés par le modèle SLV. On conclut qu'il s'agit d'un bon ajustement pour les grandes maturités, néanmoins pour les petites maturités les résultats ne sont satisfaisants qu'au voisinage du point ATM. \\\\
+On mentionne que le modèle Colocating local volatility permet d'atteindre le même fit du smile que le modèle à volatilité locale stochastique avec un coût de calcul relativement inférieur.
+\section{Étude comparative}
+On calcule dans un premier temps les prix à la date $t=0$ de plusieurs options avec les deux modèles SLV \ref{slv} et CLV \ref{clvmdl} et avec la méthode de déformation \ref{def}.
+\subsection{Options européennes}
+\subsubsection{Options Call et Put}
+On considère un portefeuille de Calls et de Puts de différentes maturités et différents strikes. Le tableau suivant présente les prix à $t=0$ donné par le modèle SLV, CLV et méthode de
+\vspace*{0.2cm} déformation.\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & Marché & SLV & CLV & Def Method \\
+ \hline
+Prix du portefeuille & 0.528965 & 0.527769 & 0.527973 &0.528946\\
+\hline
+Erreur absolue & & 0.00099 & 0.00119 & 1.94e-05\\
+\hline
+\end{tabular}
+\captionof{table}{Prix d'un portefeuille de Call et Put calculé à partir des modèles SLV, CLV et de la méthode de déformation et comparés avec le prix du marché}
+\end{center}
+On remarque que parmi les trois prix, le prix donné par la méthode de déformation est plus proche en terme d'erreur absolue au prix de marché. Ce résultat est attendu vu l'ajustement au smile du marché qu'on a observé dans la figure \ref{fig2}. 
+\begin{center}
+\includegraphics[scale=0.45]{C:/Users/PC/Desktop/CLV/sigsbr.png}
+\label{figmdl}
+\captionof{figure}{Volatilité implicite du marché contre celle du modèle SLV \ref{slv} pour différentes maturités}
+\end{center}
+\subsubsection{Option digitale}
+On considère une option digitale de prix à l'instant $t=0$,
+$e^{-rT}\mathbb{E}\left[ \textbf{1}_{S_T > K} \right]$. On remarque dans la figure \ref{digit} que la méthode de déformation et celle de modèle SLV donnent des prix assez proches ( avec une erreur absolue qui ne dépasse pas 0.005). Mais les trois méthodes donnent des prix similaires pour ce type d'options.
+\begin{center}
+\label{digit}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/digitop.png}
+\captionof{figure}{Prix d'option digitale pour différents strikes avec le modèle \ref{slv}, clv et la méthode de déformation d'échantillon}
+\end{center}
+\subsubsection{Option spread}
+On considère une option spread entre deux sous-jacents corrélés de coefficient de corrélation $\rho = 0.9$, de spots $S_0^1=1$ et $S_0^2=0.98$. Son prix à l'instant $t=0$ est 
+$e^{-rT}\mathbb{E}\left[ \left( S_T^2 - S_T^1 -K \right)_+\right]$. 
+\begin{center}
+\includegraphics[scale=0.5]{C:/Users/PC/Desktop/CLV/spread.png}
+\captionof{figure}{Prix d'option spread pour différents strikes avec le modèle \ref{slv}, clv et la méthode de déformation d'échantillon}
+\end{center}
+On remarque que les prix donnés par les trois méthode/modèles sont assez proches.
+\subsection{Options exotiques}
+Ici on ne va comparer que le modèle SLV et le modèle CLV. En effet, la méthode de déformation est conçue pour s'ajuster aux prix des options vanilles et donc européennes, néanmoins on a essayé de la tester pour des options exotiques mais elle donne des résultats médiocres (sauf pour un Call américain sans dividende).  
+\subsubsection{Option forward-start}
+Soient $T_1 = 3$ et $T_2 = 4$. On considère une option forward-start de prix à la date $t=0$, $e^{-rT_2}\mathbb{E}\left[  \left(\frac{S_{T_2}}{S_{T_1}}-K \right)_+ \right]$. \\\\
+Ici on essaye plusieurs valeurs pour le paramètres $\lambda$ du  processus kernel du modèle CLV afin de pouvoir s'ajuster aux volatilités forward (comme déjà mentionné dans la sous section \ref{seckernel}).\\\\
+On remarque que les prix calculés par les deux modèles sont assez proches.
+\begin{center}
+\includegraphics[scale=0.6]{C:/Users/PC/Desktop/CLV/forward.png}
+\captionof{figure}{Prix d'option forward pour différents strikes avec le modèle SLV \ref{slv} et modèle CLV}
+\end{center}
+\subsubsection{Options bermudiennes}
+On considère un Put bermudien de maturité $T$ de prix à la date $t=0$ 
+\begin{equation}
+\label{sup}
+V_0 = \underset{\tau \in \mathcal{T}}{\sup} \mathbb{E}\left[ e^{-r \tau} ( K - S_{\tau})_+ \right]
+\end{equation}
+Avec $\mathcal{T}$ est un ensemble de dates d'exercices $t_0\leq \dots \leq t_n$ auxquelles on peut exercer l'option avant la maturité $T$. \\\\
+La solution de l'équation \ref{sup} se fait par le principe de la  programmation dynamique 
+\begin{equation}
+\left\{
+    \begin{array}{l}
+       V_{t_n} = \left( K - S_{t_n} \right)_+\\
+       V_{t_i} = \max \left( \left( K - S_{t_i} \right)_+,  e^{-r(t_{i+1}-t_i)}\mathbb{E}\left( V_{t_{i+1}} | S_{t_i} \right) \right),\quad i \in \llbracket 0, n-1 \rrbracket \\
+    \end{array}
+\right.
+\end{equation}
+Pour calculer le prix de cette option il faut calculer l'espérance conditionnelle $\mathbb{E}\left( V_{t_{i+1}} | S_{t_i} \right)$, $ i \in \llbracket 0, n-1 \rrbracket$. On utilise alors la méthode de \textbf{Least square Monte Carlo} \cite{LSMC}.\\\\
+On remarque dans la figure \ref{bermfig} que les prix calculés par les deux modèles sont assez proches.
+\begin{center}
+\label{bermfig}
+\includegraphics[scale=0.55]{C:/Users/PC/Desktop/CLV/berm.png}
+\captionof{figure}{Prix d'un put bermudien pour différents strikes avec le modèle SLV \ref{slv} et modèle CLV}
+\end{center}
+\subsubsection{Option barrière}
+On considère une option put barrière up-out de prix à la date $t=0$, $e^{-rT}\mathbb{E}\left[ (K - S_T)_+ \textbf{1}_{(\underset{t \in [0, T]}{\max} S_t < B)} \right]$, avec $B$ la valeur de la barrière. Ici encore on remarque que les prix donnés par les deux modèles sont assez proches.
+\begin{center}
+\includegraphics[scale=0.55]{C:/Users/PC/Desktop/CLV/putbarr.png}
+\captionof{figure}{Prix d'une option put barrière up-out pour différents strikes avec le modèle SLV \ref{slv} et modèle CLV}
+\end{center}
+\section{Application au calcul de l'exposition positive espérée}
+Le but de cette étude est le calcul de l'exposition positive espérée (sans collatéral) $EPE_t = e^{-r t}\mathbb{E}\left[ \right( V_t\left)_+ \right]$. Comme on ne considère que des cas où  $V_t$ positif on a  
+ $$EPE_t = e^{-r T}\mathbb{E}\left[H_T \right] = V_0$$
+Donc dans ce cas l'étude de l'exposition positive espérée revient à l'étude de $V_0$ qui est déjà abordée dans dans la section précédente. \\\\
+Dans le cas où on a du collatéral ou si $V_t$ des options traitées peut être négative, il faut calculer les espérances conditionnelles $\mathbb{E}\left( H_T | \mathcal{F}_t \right) =\left( H_T |S_t\right)$ par les méthodes d'approximation tels que Least square Monte Carlo.
+
+\chapter{Conclusion}
+La méthode de déformation d'échantillon donne des résultats satisfaisants quant aux prix des options européennes, d'une part dans un cadre où elle est comparée avec l'échantillon provenant de la simulation exacte ou de la discérisation de l'EDS du sous-jacent, d'autre part dans le cadre où elle est comparée avec d'autres modèles. Néanmoins pour les options exotiques les résultats ne sont pas satisfaisants, la méthode nécessite donc une amélioration. L'inconvénient de cette méthode est qu'elle ne permet pas d'effectuer une analyse d'erreur vu qu'on effectue des changements non linéaires sur les réalisations d'une variable aléatoire.\\\\
+Le Colocating local volatility modèle quant à lui donne des résultats satisfaisants pour les options européennes et exotiques. Cependant, il faut bien choisir le paramètre $\lambda$ (la vitesse de retour à la moyenne dans la dynamique du processus kernel O.U.) pour pouvoir s'ajuster aux volatilités forward et donc de pouvoir pricer des options exposées à ce type de risque. On mentionne encore que le modèle Colocating local volatility permet d'atteindre le même fit du smile que le modèle à volatilité locale stochastique avec un coût computationnel relativement inférieur.  \\\\
+
+
+\bibliographystyle{apalike}
+\bibliography{refMFD}
+
+\end{document}
