@@ -1,0 +1,13 @@
+bisect:
+  a: 1.0e-3
+  b: 2.
+  maxiter: 150
+  xtol: 1.0e-10
+
+brent:
+  x0: .205
+
+minimize:
+  x0: .1
+  method: 'L-BFGS-B'
+  options: {maxiter: 200,  ftol: 1.0e-10, gtol: 1.0e-15}
